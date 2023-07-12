@@ -197,10 +197,13 @@
         </div>
       </div>
     </el-row>
+    <div class="mirror">
+      <Codemirror v-model:value="fileTextEditor" :options="cmOptions" border placeholder="test placeholder" @blur="onBlur" />
+    </div>
   </section>
 </template>
 <script>
-import { defineComponent, computed, onMounted, onActivated, nextTick, watch, ref, reactive, getCurrentInstance } from 'vue'
+import { defineComponent, computed, onMounted, onUnmounted, onActivated, nextTick, watch, ref, reactive, getCurrentInstance } from 'vue'
 import { useStore } from "vuex"
 import { useRouter, useRoute } from 'vue-router'
 import {
@@ -211,7 +214,18 @@ import {
   UploadFilled,
   EditPen
 } from '@element-plus/icons-vue'
-import { async } from 'q';
+import Codemirror from "codemirror-editor-vue3";
+// placeholder
+import "codemirror/addon/display/placeholder.js";
+// language  
+// import "codemirror/mode/markdown/markdown.js";
+import "codemirror/mode/javascript/javascript.js";
+// placeholder
+import "codemirror/addon/display/placeholder.js";
+// theme
+// import "codemirror/theme/dracula.css";
+import "codemirror/theme/ayu-mirage.css";
+import "codemirror/theme/neo.css";
 export default defineComponent({
   name: 'Datasets',
   components: {
@@ -220,7 +234,8 @@ export default defineComponent({
     Folder,
     Plus,
     UploadFilled,
-    EditPen
+    EditPen,
+    Codemirror
   },
   props: {
     likesValue: { type: Boolean, default: false }
@@ -751,6 +766,31 @@ export default defineComponent({
       }
       return newNodeList;
     }
+
+
+    const code = ref(`
+    var i = 0;
+    for (; i < 9; i++) {
+      console.log(i);
+      // more statements
+    }`)
+    const cmOptions = {
+      mode: 'text/x-markdown', // Language mode
+      // theme: 'dracula', // Theme
+      lineNumbers: true, // Show line number
+      smartIndent: true, // Smart indent
+      indentUnit: 4, // The smart indent unit is 2 spaces in length
+      foldGutter: true, // Code folding
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      styleActiveLine: true, // Display the style of the selected row
+      readOnly: false,
+    }
+
+    const onBlur = (option) => {
+      console.log("update:value", option.getValue())
+    }
+
     onMounted(() => {
       reset()
       window.scrollTo(0, 0)
@@ -794,7 +834,11 @@ export default defineComponent({
       blobSize,
       init, handleCommand, momentFilter, handleChange, handleRemove, commitFun, reset, cancelFun, commitEditFun,
       folderModeOn, handleFolderRemove, handleFolderChange, commitFolderFun, folderDetails, getListFolderMain,
-      calculateDiffTime, fileEdit, editChange, downFile, sizeChange, deleteFile
+      calculateDiffTime, fileEdit, editChange, downFile, sizeChange, deleteFile,
+
+
+      code,
+      cmOptions, onBlur
     }
   }
 })
@@ -805,6 +849,7 @@ export default defineComponent({
   background: #fff;
   color: #333;
   font-size: 18px;
+  text-align: left;
   @media screen and (max-width: 1200px) {
     font-size: 16px;
   }
@@ -1155,6 +1200,28 @@ export default defineComponent({
             }
           }
         }
+      }
+    }
+  }
+  .mirror {
+    margin: auto;
+    @media screen and (max-width: 1600px) {
+      padding: 0.4rem 0.16rem 0.9rem;
+    }
+    @media screen and (min-width: 1280px) {
+      max-width: 1280px;
+    }
+    @media screen and (min-width: 1536px) {
+      max-width: 1536px;
+    }
+    .codemirror-container {
+      font-size: 15px;
+      color: #878c93;
+      @media screen and (max-width: 1600px) {
+        font-size: 14px;
+      }
+      @media screen and (max-width: 768px) {
+        font-size: 13px;
       }
     }
   }
