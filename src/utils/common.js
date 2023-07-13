@@ -288,6 +288,11 @@ function copyContent(text, tipCont) {
   return false
 }
 
+function hiddAddress(val) {
+  if (val) return `${val.substring(0, 5)}...${val.substring(val.length - 5)}`
+  else return '-'
+}
+
 const Web3 = require('web3');
 let web3Init
 if (typeof window.ethereum === 'undefined') {
@@ -309,6 +314,20 @@ if (typeof window.ethereum === 'undefined') {
   web3Init = web3
 }
 
+
+const cmOptions = {
+  mode: 'text/x-markdown', // Language mode
+  // theme: 'dracula', // Theme
+  lineNumbers: true, // Show line number
+  smartIndent: true, // Smart indent
+  indentUnit: 4, // The smart indent unit is 2 spaces in length
+  foldGutter: true, // Code folding
+  matchBrackets: true,
+  autoCloseBrackets: true,
+  styleActiveLine: true, // Display the style of the selected row
+  readOnly: false,
+}
+
 export default {
   sendRequest,
   timeout,
@@ -321,5 +340,7 @@ export default {
   popupwindow,
   copyContent,
   getUnit,
-  changeIDLogin
+  changeIDLogin,
+  hiddAddress,
+  cmOptions
 }
