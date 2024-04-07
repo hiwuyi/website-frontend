@@ -453,9 +453,15 @@ export default defineComponent({
     text-align: left;
 
     .deployment {
-      width: 98%;
+      width: 90%;
       max-width: 1536px;
       margin: 0.3rem auto 0.4rem;
+      @media screen and (max-width: 768px) {
+        width: 94%;
+      }
+      @media screen and (max-width: 600px) {
+        width: 98%;
+      }
       .deploy-cont {
         margin: auto;
         .font {
