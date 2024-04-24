@@ -53,7 +53,7 @@ Navigate to `http://localhost:8080/`. The app will automatically reload if you c
 
 ```shell
 # Build test projects
-$ npm run build:test_t / npm run build:test_u / npm run build:test
+$ npm run build:sf_testnet_t / npm run build:sf_testnet_u / npm run build:sf_testnet
 
 # Build production projects
 $ npm run build:prod_t / npm run build:prod_u / npm run build:prod
