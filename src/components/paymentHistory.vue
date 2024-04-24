@@ -12,6 +12,7 @@
         <el-table-column prop="token" label="TOKEN">
           <template #default="scope">
             <span v-if="scope.row.chain_id === 2024">SWAN</span>
+            <span v-else-if="scope.row.chain_id === 20241133">sETH</span>
             <span v-else>USDC</span>
           </template>
         </el-table-column>

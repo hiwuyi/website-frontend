@@ -499,7 +499,7 @@ export default defineComponent({
 
     async function networkEstimate () {
       const getID = await system.$commonFun.web3Init.eth.net.getId()
-      const list = [2024]
+      const list = [20241133]
       const getPast = await list.some(t => t === getID)
       if (getPast) return true
       else {

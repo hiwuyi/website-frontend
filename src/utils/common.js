@@ -286,6 +286,12 @@ async function getUnit(id) {
       unit = 'ETH'
       name = 'Filecoin - Hyperspace testnet '
       break
+    case 20241133:
+      unit = 'sETH'
+      name = 'Swan Proxima Chain '
+      url = `${process.env.VUE_APP_ATOMBLOCKURL}/address/`
+      url_tx = `${process.env.VUE_APP_ATOMBLOCKURL}/tx/`
+      break
     case 11155111:
       unit = 'ETH'
       name = 'Sepolia Testnet '
@@ -345,6 +351,19 @@ async function walletChain(chainId) {
         },
         rpcUrls: [process.env.VUE_APP_SATURNURL],
         blockExplorerUrls: [process.env.VUE_APP_SATURNBLOCKURL]
+      }
+      break
+    case 20241133:
+      text = {
+        chainId: web3Init.utils.numberToHex(20241133),
+        chainName: 'Swan Proxima Chain',
+        nativeCurrency: {
+          name: 'sETH',
+          symbol: 'sETH', // 2-6 characters long
+          decimals: 18
+        },
+        rpcUrls: [process.env.VUE_APP_ATOMURL],
+        blockExplorerUrls: [process.env.VUE_APP_ATOMBLOCKURL]
       }
       break
     case 97:
