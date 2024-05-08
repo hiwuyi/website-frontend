@@ -448,7 +448,10 @@ export default defineComponent({
           .on('error', () => hardwareLoad.value = false)
       } catch (err) {
         console.log('err', err)
-        if (err && err.message) system.$commonFun.messageTip('error', err.message)
+        if (err && err.message) {
+          if (err.message.includes('Insufficient funds')) system.$commonFun.messageTip('error', `Not sufficient fund, please follow docs <a href="https://docs.swanchain.io/swan-testnet/atom-accelerator-race/before-you-get-started/claim-testswan" target="_blank" style="color: inherit;text-decoration: underline;">here</a> to claim the testSWAN token`, true)
+          else system.$commonFun.messageTip('error', err.message)
+        }
         closePart()
         if (props.renewButton === 'fork') context.emit('handleHard', false, false)
       }

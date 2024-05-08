@@ -179,11 +179,12 @@ async function gatewayGain(type) {
   }
 }
 
-async function messageTip(type, text) {
+async function messageTip(type, text, HTMLString) {
   ElMessage({
     showClose: true,
     message: text,
     type: type,
+    dangerouslyUseHTMLString: HTMLString || false
   })
 }
 
