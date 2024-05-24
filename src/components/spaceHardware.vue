@@ -664,14 +664,16 @@ export default defineComponent({
 
         Object.keys(list).forEach(function (key) {
           // console.log(`${key}: `, list[key]);
-          available_resource += list[key].available_resource
-          whitelist += list[key].whitelist
-          arr.push({
-            value: key,
-            label: key,
-            available_resource: list[key].available_resource,
-            whitelist: list[key].whitelist
-          });
+          if (list[key].available_resource > 0) {
+            available_resource += list[key].available_resource
+            whitelist += list[key].whitelist
+            arr.push({
+              value: key,
+              label: key,
+              available_resource: list[key].available_resource,
+              whitelist: list[key].whitelist
+            });
+          }
         });
 
         arr.unshift({
