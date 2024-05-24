@@ -263,7 +263,7 @@
               </el-select>
               <span class="span-available flex-row" v-if="sleepSelect.regionContent">
                 {{sleepSelect.regionContent.available_resource}}
-                <el-popover placement="top-start" :width="200" trigger="hover" :content="`${sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource?'all machines may contains in whitelist, deployment may failed.':'The amount of this hardware available in the current region'}`"
+                <el-popover placement="top-start" :width="200" trigger="hover" :content="`${sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource?'All machines may contain in whitelist, deployment may fail.':'The amount of this hardware available in the current region'}`"
                   popper-style="word-break: break-word; text-align: left;">
                   <template #reference>
                     <div class="flex-row">
