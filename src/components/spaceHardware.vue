@@ -132,11 +132,12 @@
                     <div class="flex-row space-between wrap" v-if="ol.hardware_status.toLowerCase() === 'available'">
                       <b>{{ ol.hardware_price }} SWAN per hour</b>
                       <span class="span-available">
-                        <el-popover placement="top-start" :width="200" trigger="hover" :content="`${ol.whitelist > 0?'80 current available machines; some of them have been booked. Try to avoid to deploy on the booked machines': '80 current available machines'}`" popper-style="word-break: break-word; text-align: left;">
+                        <el-popover placement="top-start" :width="200" trigger="hover" :content="`${ol.whitelist > 0?ol.available_resource+' current available machines; some of them have been booked. Try to avoid to deploy on the booked machines': ol.available_resource+' current available machines'}`"
+                          popper-style="word-break: break-word; text-align: left;">
                           <template #reference>
                             <div class="flex-row">
-                              {{ol.available_resource}} available
-                              <svg v-if="ol.whitelist > 0" class="info" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
+                              {{ol.available_resource}}
+                              <svg class="info" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
                                 <path d="M17 22v-8h-4v2h2v6h-3v2h8v-2h-3z" fill="currentColor"></path>
                                 <path d="M16 8a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 8z" fill="currentColor"></path>
                                 <path d="M16 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14zm0-26a12 12 0 1 0 12 12A12 12 0 0 0 16 4z" fill="currentColor"></path>
@@ -261,14 +262,15 @@
                 <el-option v-for="item in sleepSelect.regionOption" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
               <span class="span-available flex-row" v-if="sleepSelect.regionContent">
-                {{sleepSelect.regionContent.available_resource}} available
-                <el-popover v-if="sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource" placement="top-start" :width="200" trigger="hover" content="all machines may contains in whitelist, deployment may failed." popper-style="word-break: break-word; text-align: left;">
+                {{sleepSelect.regionContent.available_resource}}
+                <el-popover placement="top-start" :width="200" trigger="hover" :content="`${sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource?'all machines may contains in whitelist, deployment may failed.':'The amount of this hardware available in the current region'}`"
+                  popper-style="word-break: break-word; text-align: left;">
                   <template #reference>
                     <div class="flex-row">
                       <svg class="info" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
-                        <path d="M17 22v-8h-4v2h2v6h-3v2h8v-2h-3z" fill="red"></path>
-                        <path d="M16 8a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 8z" fill="red"></path>
-                        <path d="M16 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14zm0-26a12 12 0 1 0 12 12A12 12 0 0 0 16 4z" fill="red"></path>
+                        <path d="M17 22v-8h-4v2h2v6h-3v2h8v-2h-3z" :fill="sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource?'red':'currentColor'"></path>
+                        <path d="M16 8a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 8z" :fill="sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource?'red':'currentColor'"></path>
+                        <path d="M16 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14zm0-26a12 12 0 1 0 12 12A12 12 0 0 0 16 4z" :fill="sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource?'red':'currentColor'"></path>
                       </svg>
                     </div>
                   </template>
