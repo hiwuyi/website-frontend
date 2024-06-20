@@ -5,10 +5,10 @@ import {
 import router from '../router';
 let lastTime = 0
 
-async function sendRequest(apilink, type, jsonObject, api_token) {
+async function sendRequest (apilink, type, jsonObject, api_token) {
   // signOutFun()
   // axios.defaults.timeout = 60000
-  axios.defaults.headers.common['Authorization'] = `Bearer ${api_token?api_token:store.state.accessToken}`
+  axios.defaults.headers.common['Authorization'] = `Bearer ${api_token ? api_token : store.state.accessToken}`
   try {
     let response
     switch (type) {
@@ -53,16 +53,16 @@ async function sendRequest(apilink, type, jsonObject, api_token) {
   }
 }
 
-async function timeout(delay) {
+async function timeout (delay) {
   return new Promise((resolve) => setTimeout(resolve, delay))
 }
 
-async function sortBoole(arr) {
+async function sortBoole (arr) {
   if (!arr) return null
   return arr.sort((a, b) => b.is_leading_job - a.is_leading_job)
 }
 
-async function Init(callback) {
+async function Init (callback) {
   if (typeof window.ethereum === 'undefined') {
     window.open('https://metamask.io/download.html')
     // alert("Consider installing MetaMask!");
@@ -76,11 +76,11 @@ async function Init(callback) {
           return false
         }
         web3Init.eth.getAccounts().then(async webAccounts => {
-            store.dispatch('setMetaAddress', webAccounts[0])
-            // const chainId = await providerInit.request({ method: 'eth_chainId' })
-            // console.log(parseInt(chainId, 16))
-            callback(webAccounts[0])
-          })
+          store.dispatch('setMetaAddress', webAccounts[0])
+          // const chainId = await providerInit.request({ method: 'eth_chainId' })
+          // console.log(parseInt(chainId, 16))
+          callback(webAccounts[0])
+        })
           .catch(async (error) => {
             store.dispatch('setMetaAddress', accounts[0])
             callback(accounts[0])
@@ -92,7 +92,7 @@ async function Init(callback) {
         router.push({
           name: 'spaces'
         })
-        if (error === "User rejected provider access") {} else {
+        if (error === "User rejected provider access") { } else {
           alert("Please unlock MetaMask and switch to the correct network.");
           return false
         }
@@ -104,7 +104,7 @@ async function Init(callback) {
   }
 }
 
-async function login() {
+async function login () {
   if (!store.state.metaAddress || store.state.metaAddress === undefined) {
     const accounts = await providerInit.request({
       method: 'eth_requestAccounts'
@@ -119,7 +119,7 @@ async function login() {
   return [!!token, '']
 }
 
-async function throttle() {
+async function throttle () {
   // Prevent multiple signatures
   let now = new Date().valueOf();
   if (lastTime > 0 && (now - lastTime) <= 2000) return false
@@ -127,7 +127,7 @@ async function throttle() {
   return true
 }
 
-async function sign(nonce) {
+async function sign (nonce) {
   store.dispatch('setLogin', false)
   const rightnow = (Date.now() / 1000).toFixed(0)
   const sortanow = rightnow - (rightnow % 600)
@@ -150,7 +150,7 @@ async function sign(nonce) {
   return [signature, signErr]
 }
 
-async function performSignin(sig) {
+async function performSignin (sig) {
   try {
     const reqOpts = [store.state.metaAddress, sig]
     const response = await sendRequest(`${process.env.VUE_APP_BASEAPI}login`, 'post', reqOpts)
@@ -168,7 +168,7 @@ async function performSignin(sig) {
   }
 }
 
-async function gatewayGain(type) {
+async function gatewayGain (type) {
   if (type && store.state.gateway) return
   try {
     const response = await sendRequest(`${process.env.VUE_APP_BASEAPI}gateway`, 'get')
@@ -179,7 +179,7 @@ async function gatewayGain(type) {
   }
 }
 
-async function messageTip(type, text, HTMLString) {
+async function messageTip (type, text, HTMLString) {
   ElMessage({
     showClose: true,
     message: text,
@@ -188,7 +188,7 @@ async function messageTip(type, text, HTMLString) {
   })
 }
 
-async function signOutFun() {
+async function signOutFun () {
   store.dispatch('setAccessToken', '')
   store.dispatch('setLogin', false)
   store.dispatch('setNavLogin', false)
@@ -200,7 +200,7 @@ async function signOutFun() {
   // })
 }
 
-function momentFun(dateItem, type) {
+function momentFun (dateItem, type) {
   let dateNew = dateItem * 1000
   let dataUnit = ''
   let dataTime = new Date(dateNew) + ''
@@ -222,12 +222,12 @@ function momentFun(dateItem, type) {
   }
   dateNew = dateNew ?
     type ? moment(new Date(parseInt(dateNew))).format('YYYY-MM-DD HH:mm:ss') :
-    moment(new Date(parseInt(dateNew))).format('YYYY-MM-DD HH:mm:ss') + ` (${dataUnit})` :
+      moment(new Date(parseInt(dateNew))).format('YYYY-MM-DD HH:mm:ss') + ` (${dataUnit})` :
     '-'
   return dateNew
 }
 
-function popupwindow(title, url) {
+function popupwindow (title, url) {
   return window.open(
     "https://twitter.com/intent/tweet?text=" +
     encodeURIComponent(title),
@@ -236,7 +236,7 @@ function popupwindow(title, url) {
   );
 }
 
-async function getUnit(id) {
+async function getUnit (id) {
   let unit = 'ETH'
   let name = ''
   let url = ''
@@ -273,7 +273,6 @@ async function getUnit(id) {
     case 80001:
       unit = 'MATIC'
       name = 'Mumbai Testnet '
-      // url = `${process.env.VUE_APP_MUMBAIBLOCKURL}/address/`
       url = `${process.env.VUE_APP_MUMBAIPAYMENTURL}/address/`
       url_tx = `${process.env.VUE_APP_MUMBAIPAYMENTURL}/tx/`
       break
@@ -312,7 +311,7 @@ async function getUnit(id) {
   })
 }
 
-async function walletChain(chainId) {
+async function walletChain (chainId) {
   let text = {}
   switch (chainId) {
     case 8598668088:
@@ -409,17 +408,17 @@ async function walletChain(chainId) {
   }
 }
 
-async function changeIDLogin(type) {
+async function changeIDLogin (type) {
   const chainId = await providerInit.request({
     method: 'eth_chainId'
   })
   const list = [80001]
   const getPast = await list.some(t => t === parseInt(chainId, 16))
-  if (type) {} else if (!getPast) messageTip('error', 'Switch to Mumbai Testnet!')
+  if (type) { } else if (!getPast) messageTip('error', 'Switch to Mumbai Testnet!')
   return getPast
 }
 
-function copyContent(text, tipCont) {
+function copyContent (text, tipCont) {
   var txtArea = document.createElement('textarea')
   txtArea.id = 'txt'
   txtArea.style.position = 'fixed'
@@ -446,17 +445,17 @@ function copyContent(text, tipCont) {
   return false
 }
 
-function hiddAddress(val) {
+function hiddAddress (val) {
   if (val) return `${val.substring(0, 5)}...${val.substring(val.length - 5)}`
   else return '-'
 }
 
-function hiddAddressSmall(val) {
+function hiddAddressSmall (val) {
   if (val) return `${val.substring(0, 2)}...${val.substring(val.length - 5)}`
   else return '-'
 }
 
-function NumFormat(value) {
+function NumFormat (value) {
   if (String(value) === '0') return '0'
   else if (!value) return '-'
   var intPartArr = String(value).split('.')
@@ -466,7 +465,7 @@ function NumFormat(value) {
   return intPartArr[1] ? `${intPartFormat}.${intPartArr[1]}` : intPartFormat
 }
 
-function calculateDiffTime(startTime) {
+function calculateDiffTime (startTime) {
   var endTime = Math.round(new Date() / 1000)
   var timeDiff = endTime - startTime
   var year = timeDiff > (86400 * 365) ? parseInt(timeDiff / 86400 / 365) : 0
@@ -484,12 +483,12 @@ function calculateDiffTime(startTime) {
   else return '-'
 }
 
-function expiredTime(validDays) {
+function expiredTime (validDays) {
   if (String(validDays) === '0') return 'Forever'
   else return momentFun(validDays)
 }
 
-function sizeChange(bytes) {
+function sizeChange (bytes) {
   if (bytes === 0) return '0 B'
   if (!bytes) return '-'
   var k = 1024 // or 1000
@@ -500,7 +499,7 @@ function sizeChange(bytes) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-async function expireTimeFun(cont) {
+async function expireTimeFun (cont) {
   const current = Math.floor(Date.now() / 1000)
   let expireTime = {
     time: NaN,
@@ -523,17 +522,17 @@ async function expireTimeFun(cont) {
   return expireTime
 }
 
-function goLink(link) {
+function goLink (link) {
   window.open(link)
 }
 
-function strToHexCharCode(str) {
+function strToHexCharCode (str) {
   if (str === "") return "";
   const code = Number(str)
   return `0x${code.toString(16)}`
 }
 
-function cmOptions(owner) {
+function cmOptions (owner) {
   return {
     mode: 'text/x-markdown', // Language mode
     // theme: 'dracula', // Theme
