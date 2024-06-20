@@ -458,6 +458,12 @@ export default defineComponent({
         const approveAmount = (pricePerHour * ruleForm.usageTime).toFixed(6) // usdc is 6 decimal, ensure the amount will not be more than 6
         const wei = system.$commonFun.web3Init.utils.toWei(String(approveAmount), 'mwei')
 
+        const tastUUID = await getTaskUUid(wei)
+        if (!tastUUID) {
+          closePart()
+          return
+        }
+
         let approveGasLimit = await tokenContract.methods
           .approve(paymentContractAddress, wei)
           .estimateGas({ from: store.state.metaAddress })
@@ -469,13 +475,13 @@ export default defineComponent({
           })
 
         let payMethod = paymentContract.methods
-          .lockRevenue(props.listdata.uuid, sleepSelect.value.hardware_id, ruleForm.usageTime)
+          .lockRevenue(tastUUID, sleepSelect.value.hardware_id, ruleForm.usageTime)
 
         let gasLimit = await payMethod.estimateGas({ from: store.state.metaAddress })
         const tx = await payMethod.send({ from: store.state.metaAddress, gasLimit: Math.floor(gasLimit * 1.5) })
           .on('transactionHash', async (transactionHash) => {
             console.log('transactionHash:', transactionHash)
-            await hardwareHash(transactionHash, wei)
+            await hardwareHash(transactionHash, wei, tastUUID)
             closePart()
             context.emit('handleHard', false, true)
           })
@@ -489,6 +495,23 @@ export default defineComponent({
         closePart()
         if (props.renewButton === 'fork') context.emit('handleHard', false, false)
       }
+    }
+
+    async function getTaskUUid (wei) {
+      try {
+        const getID = await system.$commonFun.web3Init.eth.net.getId()
+        let fd = new FormData()
+        fd.append('paid', system.$commonFun.web3Init.utils.fromWei(String(wei), 'ether')) // 授权代币的金额
+        fd.append('space_name', route.params.name)
+        fd.append('cfg_name', sleepSelect.value.hardware_name)
+        fd.append('duration', ruleForm.usageTime * 3600)
+        fd.append('chain_id', getID)
+        fd.append('region', sleepSelect.value.regionValue)
+        fd.append('start_in', ruleForm.sleepTime * 60)
+        fd.append('wallet', store.state.metaAddress)
+        const taskRes = await system.$commonFun.sendRequest(`${process.env.VUE_APP_BASEAPI}space/deployment`, 'post', fd)
+        if (taskRes && taskRes.status === "success") return taskRes.data.task.uuid
+      } catch{ return null }
     }
 
     function closePart () {
@@ -546,26 +569,27 @@ export default defineComponent({
       }
     }
 
-    async function hardwareHash (tx_hash, approveAmount) {
+    async function hardwareHash (tx_hash, approveAmount, task_uuid) {
       const net = await networkEstimate()
       if (!net) return
       const getID = await system.$commonFun.web3Init.eth.net.getId()
       let fd = new FormData()
-      fd.append('paid', system.$commonFun.web3Init.utils.fromWei(String(approveAmount), 'ether')) // 授权代币的金额
-      // fd.append('paid', approveAmount) // 授权代币的金额
-      fd.append('space_name', route.params.name)
-      fd.append('cfg_name', sleepSelect.value.hardware_name)
-      fd.append('duration', ruleForm.usageTime * 3600)
       fd.append('tx_hash', tx_hash)
-      fd.append('chain_id', getID)
-      fd.append('region', sleepSelect.value.regionValue)
-      fd.append('start_in', ruleForm.sleepTime * 60)
       if (props.renewButton === 'renew') {
+        fd.append('paid', system.$commonFun.web3Init.utils.fromWei(String(approveAmount), 'ether')) // 授权代币的金额
+        fd.append('space_name', route.params.name)
+        fd.append('cfg_name', sleepSelect.value.hardware_name)
+        fd.append('duration', ruleForm.usageTime * 3600)
+        fd.append('chain_id', getID)
+        fd.append('region', sleepSelect.value.regionValue)
+        fd.append('start_in', ruleForm.sleepTime * 60)
         const urlRes = `${process.env.VUE_APP_BASEAPI}spaces/${props.listdata.uuid}/deployment/renew`
         const hardhashRes = await system.$commonFun.sendRequest(urlRes, 'post', fd)
         if (hardhashRes && hardhashRes.status && hardhashRes.message) system.$commonFun.messageTip(hardhashRes.status, hardhashRes.message)
       } else {
-        const urlRes = `${process.env.VUE_APP_BASEAPI}space/deployment`
+        fd.append('space_uuid', props.listdata.uuid)
+        fd.append('task_uuid', task_uuid)
+        const urlRes = `${process.env.VUE_APP_BASEAPI}space/payment/validate`
         const hardhashRes = await system.$commonFun.sendRequest(urlRes, 'post', fd)
         if (hardhashRes && hardhashRes.status === 'success') system.$commonFun.messageTip(hardhashRes.status, hardhashRes.message)
         else if (hardhashRes.message) system.$commonFun.messageTip('error', hardhashRes.message)
