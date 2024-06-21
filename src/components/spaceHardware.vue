@@ -334,7 +334,7 @@ import { defineComponent, computed, onMounted, watch, ref, reactive, getCurrentI
 import { useStore } from "vuex"
 import { useRouter, useRoute } from 'vue-router'
 
-import SpacePaymentABI from '@/utils/abi/SpacePaymentV6.json'
+import ClientPaymentABI from '@/utils/abi/ClientPayment.json'
 import tokenABI from '@/utils/abi/tokenLLL.json'
 import {
   CircleCheckFilled
@@ -439,7 +439,7 @@ export default defineComponent({
     let tokenAddress = process.env.VUE_APP_SATURN_TOKEN_ADDRESS
     let tokenContract = new system.$commonFun.web3Init.eth.Contract(tokenABI, tokenAddress);
     let paymentContractAddress = process.env.VUE_APP_HARDWARE_ADDRESS
-    let paymentContract = new system.$commonFun.web3Init.eth.Contract(SpacePaymentABI, paymentContractAddress)
+    let paymentContract = new system.$commonFun.web3Init.eth.Contract(ClientPaymentABI, paymentContractAddress)
 
     async function hardwareFun () {
       const net = await networkEstimate()
@@ -475,7 +475,7 @@ export default defineComponent({
           })
 
         let payMethod = paymentContract.methods
-          .lockRevenue(tastUUID, sleepSelect.value.hardware_id, ruleForm.usageTime)
+          .submitPayment(tastUUID, sleepSelect.value.hardware_id, ruleForm.usageTime * 3600)
 
         let gasLimit = await payMethod.estimateGas({ from: store.state.metaAddress })
         const tx = await payMethod.send({ from: store.state.metaAddress, gasLimit: Math.floor(gasLimit * 1.5) })
