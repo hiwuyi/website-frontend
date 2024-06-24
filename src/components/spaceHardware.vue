@@ -458,7 +458,7 @@ export default defineComponent({
         const approveAmount = (pricePerHour * ruleForm.usageTime).toFixed(6) // usdc is 6 decimal, ensure the amount will not be more than 6
         const wei = system.$commonFun.web3Init.utils.toWei(String(approveAmount), 'mwei')
 
-        const tastUUID = await getTaskUUid(wei)
+        const tastUUID = props.renewButton === 'renew' ? props.listdata.task_uuid : await getTaskUUid(wei)
         if (!tastUUID) {
           closePart()
           return
