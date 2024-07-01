@@ -551,6 +551,23 @@ function strToHexCharCode(str) {
   return `0x${code.toString(16)}`
 }
 
+function debounce(fn, delay) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('Fn is not a function')
+  }
+  let timer;
+  return function () {
+    var _this = this;
+    var args = arguments;
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(function () {
+      fn.apply(_this, args);
+    }, delay);
+  };
+}
+
 function cmOptions(owner) {
   return {
     mode: 'text/x-markdown', // Language mode
@@ -614,6 +631,7 @@ export default {
   strToHexCharCode,
   cmOptions,
   expireTimeFun,
+  debounce,
   gatewayGain,
   providerInit
 }
