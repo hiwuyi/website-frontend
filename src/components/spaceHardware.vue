@@ -336,6 +336,7 @@ import { useRouter, useRoute } from 'vue-router'
 
 import ClientPaymentABI from '@/utils/abi/ClientPayment.json'
 import tokenABI from '@/utils/abi/tokenLLL.json'
+import swanTokenABI from '@/utils/abi/SwanToken.json'
 import {
   CircleCheckFilled
 } from '@element-plus/icons-vue'
@@ -437,7 +438,7 @@ export default defineComponent({
     const filesList = ref([])
     const dialogWidth = ref(document.body.clientWidth < 992 ? '90%' : '800px')
     let tokenAddress = process.env.VUE_APP_SATURN_TOKEN_ADDRESS
-    let tokenContract = new system.$commonFun.web3Init.eth.Contract(tokenABI, tokenAddress);
+    let tokenContract = new system.$commonFun.web3Init.eth.Contract(process.env.NODE_ENV === 'mainnet'?swanTokenABI:tokenABI, tokenAddress);
     let paymentContractAddress = process.env.VUE_APP_HARDWARE_ADDRESS
     let paymentContract = new system.$commonFun.web3Init.eth.Contract(ClientPaymentABI, paymentContractAddress)
 
@@ -559,7 +560,7 @@ export default defineComponent({
 
     async function networkEstimate () {
       const getID = await system.$commonFun.web3Init.eth.net.getId()
-      const list = [20241133]
+      const list = [254]
       const getPast = await list.some(t => t === getID)
       if (getPast) return true
       else {

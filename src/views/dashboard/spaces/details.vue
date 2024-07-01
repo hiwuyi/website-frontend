@@ -209,8 +209,9 @@
                   </li>
                   <li :class="{'flex-row black-color': true, 'is-disabled':parentValue !== 'Running' ||!((expireTime.time <=3&&expireTime.unit!=='hours') ||(expireTime.time <=24&&expireTime.unit==='hours'))}" v-if="metaAddress && metaAddress === route.params.wallet_address">
                     <div class="m-width">
-                      <el-tooltip v-if="parentValue !== 'Running' || !((expireTime.time <=3&&expireTime.unit!=='hours') ||(expireTime.time <=24&&expireTime.unit==='hours'))" placement="bottom" content="The space expiration time can be renewed only when it is less than 72 hours">Renew</el-tooltip>
-                      <span v-else @click="hardwareOperate('renew')">Renew</span>
+                      <!-- <el-tooltip v-if="parentValue !== 'Running' || !((expireTime.time <=3&&expireTime.unit!=='hours') ||(expireTime.time <=24&&expireTime.unit==='hours'))" placement="bottom" content="The space expiration time can be renewed only when it is less than 72 hours">Renew</el-tooltip>
+                      <span v-else @click="hardwareOperate('renew')">Renew</span> -->
+                      <span>Renew</span>
                     </div>
                   </li>
                   <li :class="{'flex-row black-color': true, 'is-disabled': !nft.contract_address || nftTokens.length === 0 }" v-if="metaAddress && metaAddress !== route.params.wallet_address">
@@ -875,8 +876,8 @@ export default defineComponent({
       if (net) {
         netEnv.value = [
           {
-            name: 'Swan Proxima Chain',
-            id: 20241133
+            name: 'Swan Mainnet',
+            id: 254
           }]
         networkC.value = true
       } else {
