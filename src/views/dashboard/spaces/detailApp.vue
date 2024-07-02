@@ -64,6 +64,8 @@
               <p v-if="listdata.cpList.error_msg" class="pre font" v-html="listdata.cpList.error_msg"></p>
               <p v-else-if="listdata.task.error_msg" class="pre font" v-html="listdata.task.error_msg"></p>
               <br />
+              <p class="pre font" v-if="!metaAddress">If you are the space owner, please
+                <el-button plain @click="hardLogin">log in</el-button> and redeploy it</p>
               <p class="pre font" v-if="metaAddress && metaAddress === route.params.wallet_address">Please
                 <el-button plain @click="hardRedeploy">redeploy</el-button> the space</p>
             </div>
@@ -276,6 +278,11 @@ export default defineComponent({
       context.emit('hardRedeploy', true)
     }
 
+    function hardLogin () {
+      router.push({ path: '/personal_center' })
+      store.dispatch('setNavLogin', true)
+    }
+
     async function logsMethod (type, name) {
       logsType.value = name
       await websocketclose()
@@ -412,7 +419,7 @@ export default defineComponent({
       logsCont,
       checkedLock,
       drawer, direction, logsLoad, logsType, clearWebsocket, upWebsocket,
-      init, handleClick, hardRedeploy, logMethod, errorLogsType,
+      init, handleClick, hardRedeploy, hardLogin, logMethod, errorLogsType,
       handleClose, logsMethod
     }
   }

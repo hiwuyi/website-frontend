@@ -337,7 +337,7 @@
                       <p v-else>Waiting for CP finish deployment</p>
                     </el-descriptions-item>
                     <el-descriptions-item label="Provider status" v-if="dataJob.job.provider_status">
-                      {{dataJob.job.provider_status.status}}, {{dataJob.job.provider_status.online ? 'Online' : 'Offline'}}
+                      {{dataJob.job.provider_status.status?dataJob.job.provider_status.status+',':''}} {{dataJob.job.provider_status.online ? 'Online' : 'Offline'}}
                     </el-descriptions-item>
                     <el-descriptions-item label="Name" v-if="dataJob.job.provider_status">
                       {{dataJob.job.provider_status.name}}
@@ -497,7 +497,7 @@ export default defineComponent({
     const filedata = ref([])
     const total = ref(0)
     const bodyWidth = ref(document.body.clientWidth > 600 ? 7 : 1)
-    const diagWidth = ref(document.body.clientWidth > 1536 ? '1536px' : '90%')
+    const diagWidth = ref(document.body.clientWidth > 1536 ? '1536px' : '96%')
     const system = getCurrentInstance().appContext.config.globalProperties
     const route = useRoute()
     const router = useRouter()

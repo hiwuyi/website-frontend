@@ -313,8 +313,15 @@ export default defineComponent({
   display: flex;
   align-items: center;
   // flex-wrap: wrap;
-  .nowrap {
+  .nowrap,
+  &.nowrap {
     flex-wrap: nowrap;
+  }
+  &.space-between {
+    justify-content: space-between;
+  }
+  &.wrap {
+    flex-wrap: wrap;
   }
 }
 </style>
