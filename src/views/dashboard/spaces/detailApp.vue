@@ -244,8 +244,8 @@ export default defineComponent({
           listdata.jobResult = props.jobResult
           listdata.cpList = props.cpList
           if (props.listValue.data.space && props.listValue.data.space.status === 'Deploying' && props.listValue.data.job) listdata.jobs_status = await jobStatusList(props.listValue.data.job)
-          listdata.space = props.listValue.data.space
-          listdata.task = props.listValue.data.task
+          listdata.space = props.listValue.data.space || {}
+          listdata.task = props.listValue.data.task || {}
         }
       }
       context.emit('handleValue', false)

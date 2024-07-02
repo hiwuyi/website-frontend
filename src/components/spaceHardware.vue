@@ -512,6 +512,7 @@ export default defineComponent({
         fd.append('wallet', store.state.metaAddress)
         const taskRes = await system.$commonFun.sendRequest(`${process.env.VUE_APP_BASEAPI}space/deployment`, 'post', fd)
         if (taskRes && taskRes.status === "success") return taskRes.data.task.uuid
+        else if(taskRes.message) system.$commonFun.messageTip('error', taskRes.message)
       } catch{ return null }
     }
 
