@@ -671,8 +671,8 @@ export default defineComponent({
       if (net) {
         netEnv.value = [
           {
-            name: 'Swan Proxima Chain',
-            id: 20241133
+            name: 'Swan Mainnet',
+            id: 254
           }]
         networkC.value = true
       } else if (refresh) {

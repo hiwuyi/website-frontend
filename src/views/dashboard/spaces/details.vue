@@ -209,8 +209,9 @@
                   </li>
                   <li :class="{'flex-row black-color': true, 'is-disabled':parentValue !== 'Running' ||!((expireTime.time <=3&&expireTime.unit!=='hours') ||(expireTime.time <=24&&expireTime.unit==='hours'))}" v-if="metaAddress && metaAddress === route.params.wallet_address">
                     <div class="m-width">
-                      <el-tooltip v-if="parentValue !== 'Running' || !((expireTime.time <=3&&expireTime.unit!=='hours') ||(expireTime.time <=24&&expireTime.unit==='hours'))" placement="bottom" content="The space expiration time can be renewed only when it is less than 72 hours">Renew</el-tooltip>
-                      <span v-else @click="hardwareOperate('renew')">Renew</span>
+                      <!-- <el-tooltip v-if="parentValue !== 'Running' || !((expireTime.time <=3&&expireTime.unit!=='hours') ||(expireTime.time <=24&&expireTime.unit==='hours'))" placement="bottom" content="The space expiration time can be renewed only when it is less than 72 hours">Renew</el-tooltip>
+                      <span v-else @click="hardwareOperate('renew')">Renew</span> -->
+                      <span>Renew</span>
                     </div>
                   </li>
                   <li :class="{'flex-row black-color': true, 'is-disabled': !nft.contract_address || nftTokens.length === 0 }" v-if="metaAddress && metaAddress !== route.params.wallet_address">
@@ -337,7 +338,7 @@
                       <p v-else>Waiting for CP finish deployment</p>
                     </el-descriptions-item>
                     <el-descriptions-item label="Provider status" v-if="dataJob.job.provider_status">
-                      {{dataJob.job.provider_status.status}}, {{dataJob.job.provider_status.online ? 'Online' : 'Offline'}}
+                      {{dataJob.job.provider_status.status?dataJob.job.provider_status.status+',':''}} {{dataJob.job.provider_status.online ? 'Online' : 'Offline'}}
                     </el-descriptions-item>
                     <el-descriptions-item label="Name" v-if="dataJob.job.provider_status">
                       {{dataJob.job.provider_status.name}}
@@ -497,7 +498,7 @@ export default defineComponent({
     const filedata = ref([])
     const total = ref(0)
     const bodyWidth = ref(document.body.clientWidth > 600 ? 7 : 1)
-    const diagWidth = ref(document.body.clientWidth > 1536 ? '1536px' : '90%')
+    const diagWidth = ref(document.body.clientWidth > 1536 ? '1536px' : '96%')
     const system = getCurrentInstance().appContext.config.globalProperties
     const route = useRoute()
     const router = useRouter()
@@ -875,8 +876,8 @@ export default defineComponent({
       if (net) {
         netEnv.value = [
           {
-            name: 'Swan Proxima Chain',
-            id: 20241133
+            name: 'Swan Mainnet',
+            id: 254
           }]
         networkC.value = true
       } else {

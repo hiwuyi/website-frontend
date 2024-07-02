@@ -25,7 +25,7 @@
               <div class="title_tip flex-row pause_margin">
                 <p class="flex-row">
                   Pause Space
-                  <svg @click="system.$commonFun.goLink('https://docs.lagrangedao.org/spaces/space-settings/instance-type')" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em"
+                  <svg @click="system.$commonFun.goLink('https://docs.lagrange.computer/spaces/space-settings/instance-type')" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em"
                     height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
                     <path d="M17 22v-8h-4v2h2v6h-3v2h8v-2h-3z" fill="currentColor"></path>
                     <path d="M16 8a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 8z" fill="currentColor"></path>
@@ -113,7 +113,7 @@
             </h2>
             <p class="p-2 flex-row">Choose a hardware for your Space.</p>
 
-            <el-row :gutter="25" class="space_hardware_list" v-for="(item, index) in hardwareOptions" :key="index">
+            <el-row :gutter="14" class="space_hardware_list" v-for="(item, index) in hardwareOptions" :key="index">
               <el-divider content-position="left">{{ item.label }}</el-divider>
               <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6" v-for="(ol, o) in item.list" :key="o" :class="{'is-hidden': ruleForm.displayAvailable ? !(ruleForm.displayAvailable && ol.hardware_status === 'available'):false}">
                 <el-card class="box-card" :class="{'active': props.renewButton === 'setting' && props.listdata.activeOrder && props.listdata.activeOrder.config && props.listdata.activeOrder.config.name === ol.hardware_name && (props.listdata.activeOrder.ended_at === null),'is-disabled':ol.hardware_status !== 'available'}"
@@ -129,7 +129,25 @@
                   <h5>{{ ol.hardware_name }}</h5>
                   <div class="desc-text">{{ ol.hardware_description }}</div>
                   <div class="price">
-                    <b v-if="ol.hardware_status.toLowerCase() === 'available'">{{ ol.hardware_price }} SWAN per hour</b>
+                    <div class="flex-row space-between wrap" v-if="ol.hardware_status.toLowerCase() === 'available'">
+                      <b>{{ ol.hardware_price }} SWAN per hour</b>
+                      <span class="span-available">
+                        <el-popover placement="top-start" :width="200" trigger="hover" :content="`${ol.whitelist > 0?ol.available_resource+' current available machines; some of them have been booked. Try to avoid to deploy on the booked machines': ol.available_resource+' current available machines'}`"
+                          popper-style="word-break: break-word; text-align: left;">
+                          <template #reference>
+                            <div class="flex-row">
+                              {{ol.available_resource}}
+                              <svg class="info" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
+                                <path d="M17 22v-8h-4v2h2v6h-3v2h8v-2h-3z" fill="currentColor"></path>
+                                <path d="M16 8a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 8z" fill="currentColor"></path>
+                                <path d="M16 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14zm0-26a12 12 0 1 0 12 12A12 12 0 0 0 16 4z" fill="currentColor"></path>
+                              </svg>
+                            </div>
+                          </template>
+                        </el-popover>
+
+                      </span>
+                    </div>
                     <b v-else>No available CP</b>
                   </div>
                 </el-card>
@@ -240,9 +258,25 @@
               <el-divider/>
             </div>
             <div class="time flex-row">
-              <el-select v-model="sleepSelect.regionValue" :disabled="props.renewButton === 'renew'?true:false" class="m-region" placeholder="Region">
+              <el-select v-model="sleepSelect.regionValue" @change="regionChange" :disabled="props.renewButton === 'renew'?true:false" class="m-region" placeholder="Region">
                 <el-option v-for="item in sleepSelect.regionOption" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
+              <span class="span-available flex-row" v-if="sleepSelect.regionContent">
+                {{sleepSelect.regionContent.available_resource}}
+                <el-popover placement="top-start" :width="200" trigger="hover" :content="`${sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource?'All machines may contain in whitelist, deployment may fail.':'The amount of this hardware available in the current region'}`"
+                  popper-style="word-break: break-word; text-align: left;">
+                  <template #reference>
+                    <div class="flex-row">
+                      <svg class="info" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
+                        <path d="M17 22v-8h-4v2h2v6h-3v2h8v-2h-3z" :fill="sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource?'red':'currentColor'"></path>
+                        <path d="M16 8a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 8z" :fill="sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource?'red':'currentColor'"></path>
+                        <path d="M16 30a14 14 0 1 1 14-14a14 14 0 0 1-14 14zm0-26a12 12 0 1 0 12 12A12 12 0 0 0 16 4z" :fill="sleepSelect.regionContent.whitelist > sleepSelect.regionContent.available_resource?'red':'currentColor'"></path>
+                      </svg>
+                    </div>
+                  </template>
+                </el-popover>
+
+              </span>
             </div>
           </div>
           <div v-if="props.renewButton !== 'renew'">
@@ -300,8 +334,9 @@ import { defineComponent, computed, onMounted, watch, ref, reactive, getCurrentI
 import { useStore } from "vuex"
 import { useRouter, useRoute } from 'vue-router'
 
-import SpacePaymentABI from '@/utils/abi/SpacePaymentV6.json'
+import ClientPaymentABI from '@/utils/abi/ClientPayment.json'
 import tokenABI from '@/utils/abi/tokenLLL.json'
+import swanTokenABI from '@/utils/abi/SwanToken.json'
 import {
   CircleCheckFilled
 } from '@element-plus/icons-vue'
@@ -403,9 +438,9 @@ export default defineComponent({
     const filesList = ref([])
     const dialogWidth = ref(document.body.clientWidth < 992 ? '90%' : '800px')
     let tokenAddress = process.env.VUE_APP_SATURN_TOKEN_ADDRESS
-    let tokenContract = new system.$commonFun.web3Init.eth.Contract(tokenABI, tokenAddress);
+    let tokenContract = new system.$commonFun.web3Init.eth.Contract(process.env.NODE_ENV === 'mainnet'?swanTokenABI:tokenABI, tokenAddress);
     let paymentContractAddress = process.env.VUE_APP_HARDWARE_ADDRESS
-    let paymentContract = new system.$commonFun.web3Init.eth.Contract(SpacePaymentABI, paymentContractAddress)
+    let paymentContract = new system.$commonFun.web3Init.eth.Contract(ClientPaymentABI, paymentContractAddress)
 
     async function hardwareFun () {
       const net = await networkEstimate()
@@ -424,6 +459,12 @@ export default defineComponent({
         const approveAmount = (pricePerHour * ruleForm.usageTime).toFixed(6) // usdc is 6 decimal, ensure the amount will not be more than 6
         const wei = system.$commonFun.web3Init.utils.toWei(String(approveAmount), 'mwei')
 
+        const tastUUID = props.renewButton === 'renew' ? props.listdata.task_uuid : await getTaskUUid(wei)
+        if (!tastUUID) {
+          closePart()
+          return
+        }
+
         let approveGasLimit = await tokenContract.methods
           .approve(paymentContractAddress, wei)
           .estimateGas({ from: store.state.metaAddress })
@@ -435,13 +476,13 @@ export default defineComponent({
           })
 
         let payMethod = paymentContract.methods
-          .lockRevenue(props.listdata.uuid, sleepSelect.value.hardware_id, ruleForm.usageTime)
+          .submitPayment(tastUUID, sleepSelect.value.hardware_id, ruleForm.usageTime * 3600)
 
         let gasLimit = await payMethod.estimateGas({ from: store.state.metaAddress })
         const tx = await payMethod.send({ from: store.state.metaAddress, gasLimit: Math.floor(gasLimit * 1.5) })
           .on('transactionHash', async (transactionHash) => {
             console.log('transactionHash:', transactionHash)
-            await hardwareHash(transactionHash, wei)
+            await hardwareHash(transactionHash, wei, tastUUID)
             closePart()
             context.emit('handleHard', false, true)
           })
@@ -455,6 +496,23 @@ export default defineComponent({
         closePart()
         if (props.renewButton === 'fork') context.emit('handleHard', false, false)
       }
+    }
+
+    async function getTaskUUid (wei) {
+      try {
+        const getID = await system.$commonFun.web3Init.eth.net.getId()
+        let fd = new FormData()
+        fd.append('paid', system.$commonFun.web3Init.utils.fromWei(String(wei), 'ether')) // 授权代币的金额
+        fd.append('space_name', route.params.name)
+        fd.append('cfg_name', sleepSelect.value.hardware_name)
+        fd.append('duration', ruleForm.usageTime * 3600)
+        fd.append('chain_id', getID)
+        fd.append('region', sleepSelect.value.regionValue)
+        fd.append('start_in', ruleForm.sleepTime * 60)
+        fd.append('wallet', store.state.metaAddress)
+        const taskRes = await system.$commonFun.sendRequest(`${process.env.VUE_APP_BASEAPI}space/deployment`, 'post', fd)
+        if (taskRes && taskRes.status === "success") return taskRes.data.task.uuid
+      } catch{ return null }
     }
 
     function closePart () {
@@ -502,7 +560,7 @@ export default defineComponent({
 
     async function networkEstimate () {
       const getID = await system.$commonFun.web3Init.eth.net.getId()
-      const list = [20241133]
+      const list = [254]
       const getPast = await list.some(t => t === getID)
       if (getPast) return true
       else {
@@ -512,26 +570,27 @@ export default defineComponent({
       }
     }
 
-    async function hardwareHash (tx_hash, approveAmount) {
+    async function hardwareHash (tx_hash, approveAmount, task_uuid) {
       const net = await networkEstimate()
       if (!net) return
       const getID = await system.$commonFun.web3Init.eth.net.getId()
       let fd = new FormData()
-      fd.append('paid', system.$commonFun.web3Init.utils.fromWei(String(approveAmount), 'ether')) // 授权代币的金额
-      // fd.append('paid', approveAmount) // 授权代币的金额
-      fd.append('space_name', route.params.name)
-      fd.append('cfg_name', sleepSelect.value.hardware_name)
-      fd.append('duration', ruleForm.usageTime * 3600)
       fd.append('tx_hash', tx_hash)
-      fd.append('chain_id', getID)
-      fd.append('region', sleepSelect.value.regionValue)
-      fd.append('start_in', ruleForm.sleepTime * 60)
       if (props.renewButton === 'renew') {
+        fd.append('paid', system.$commonFun.web3Init.utils.fromWei(String(approveAmount), 'ether')) // 授权代币的金额
+        fd.append('space_name', route.params.name)
+        fd.append('cfg_name', sleepSelect.value.hardware_name)
+        fd.append('duration', ruleForm.usageTime * 3600)
+        fd.append('chain_id', getID)
+        fd.append('region', sleepSelect.value.regionValue)
+        fd.append('start_in', ruleForm.sleepTime * 60)
         const urlRes = `${process.env.VUE_APP_BASEAPI}spaces/${props.listdata.uuid}/deployment/renew`
         const hardhashRes = await system.$commonFun.sendRequest(urlRes, 'post', fd)
         if (hardhashRes && hardhashRes.status && hardhashRes.message) system.$commonFun.messageTip(hardhashRes.status, hardhashRes.message)
       } else {
-        const urlRes = `${process.env.VUE_APP_BASEAPI}space/deployment`
+        fd.append('space_uuid', props.listdata.uuid)
+        fd.append('task_uuid', task_uuid)
+        const urlRes = `${process.env.VUE_APP_BASEAPI}space/payment/validate`
         const hardhashRes = await system.$commonFun.sendRequest(urlRes, 'post', fd)
         if (hardhashRes && hardhashRes.status === 'success') system.$commonFun.messageTip(hardhashRes.status, hardhashRes.message)
         else if (hardhashRes.message) system.$commonFun.messageTip('error', hardhashRes.message)
@@ -559,12 +618,36 @@ export default defineComponent({
       if (!net) return
       ruleForm.usageTime = 24
       sleepSelect.value = row
-      sleepSelect.value.regionOption = await regionList(row.region)
+      let {
+        available_resource,
+        whitelist,
+        arr
+      } = await regionList(row.region_detail)
+      sleepSelect.value.available_resource = available_resource
+      sleepSelect.value.whitelist = whitelist
+      sleepSelect.value.regionOption = arr
       if (props.renewButton === 'renew') sleepSelect.value.regionValue = props.listdata.activeOrder && props.listdata.activeOrder.region ? props.listdata.activeOrder.region : 'Global'
-      else sleepSelect.value.regionValue = row.region && row.region[0] ? "Global" : ''
+      else sleepSelect.value.regionValue = "Global"
+      await regionChange()
       ruleForm.sleepTime = sleepSelect.value.hardware_type.indexOf('GPU') > -1 ? '20' : '5'
       if (props.renewButton === 'renew') hardwareLoad.value = false
       sleepVisible.value = true
+    }
+
+    async function regionChange () {
+      sleepSelect.value.regionContent = await findValue(sleepSelect.value.regionOption, sleepSelect.value.regionValue)
+    }
+
+    async function findValue (arr, target) {
+      try {
+        const array = arr.filter(item => item.value === target);
+        return array[0]
+      } catch{
+        return {
+          available_resource: 0,
+          whitelist: 0
+        }
+      }
     }
 
     async function listArray (arrayList) {
@@ -584,8 +667,15 @@ export default defineComponent({
       ]
       // arrayList.sort((a, b) => a['hardware_name'].localeCompare(b['hardware_name']))
       arrayList.forEach(async hard => {
-        hard.regionOption = await regionList(hard.region)
-        hard.regionValue = hard.region && hard.region[0] ? hard.region[0] : ''
+        let {
+          available_resource,
+          whitelist,
+          arr
+        } = await regionList(hard.region_detail)
+        hard.available_resource = available_resource
+        hard.whitelist = whitelist
+        hard.regionOption = arr
+        hard.regionValue = 'Global'
         if (hard.hardware_type.toLowerCase() === 'cpu') listArr[0].list.push(hard)
         else if (hard.hardware_type.toLowerCase() === 'gpu') listArr[1].list.push(hard)
         else listArr[2].list.push(hard)
@@ -593,24 +683,37 @@ export default defineComponent({
       return listArr
     }
 
-    async function regionList (list) {
-      if (!list || !Array.isArray(list) || (list && list.length === 0)) {
-        return [];
-      }
+    function regionList (list, type) {
+      return new Promise(async resolve => {
+        let available_resource = 0, whitelist = 0, arr = []
 
-      let arr = [{
-        value: "Global",
-        label: "Global"
-      }];
-
-      list.forEach(l => {
-        arr.push({
-          value: l,
-          label: l
+        Object.keys(list).forEach(function (key) {
+          // console.log(`${key}: `, list[key]);
+          if (list[key].available_resource > 0) {
+            available_resource += list[key].available_resource
+            whitelist += list[key].whitelist
+            arr.push({
+              value: key,
+              label: key,
+              available_resource: list[key].available_resource,
+              whitelist: list[key].whitelist
+            });
+          }
         });
-      });
 
-      return arr;
+        arr.unshift({
+          value: "Global",
+          label: "Global",
+          available_resource: available_resource,
+          whitelist: whitelist
+        });
+
+        resolve({
+          available_resource,
+          whitelist,
+          arr
+        })
+      })
     }
 
     async function nameExist () {
@@ -641,7 +744,8 @@ export default defineComponent({
             hardware_price: props.listdata.activeOrder.config.price_per_hour,
             hardware_status: "available",
             hardware_type: props.listdata.activeOrder.config.hardware_type,
-            region: []
+            region: [],
+            region_detail: {}
           }
           sleepSelect.value.regionValue = props.listdata.activeOrder && props.listdata.activeOrder.region ? props.listdata.activeOrder.region : 'Global'
           ruleForm.sleepTime = props.listdata.activeOrder.config.hardware_type.indexOf('GPU') > -1 ? '20' : '5'
@@ -652,7 +756,7 @@ export default defineComponent({
         if (machinesRes && machinesRes.status === 'success') {
           if (props.renewButton === 'renew') {
             if (props.listdata.activeOrder === null) return
-            console.log('machinesRes:', machinesRes.data.hardware.length)
+            // console.log('machinesRes:', machinesRes.data.hardware.length)
             for (let hard = 0; hard < machinesRes.data.hardware.length; hard++) {
               if (machinesRes.data.hardware[hard].hardware_name === props.listdata.activeOrder.config.name) {
                 sleepChange(machinesRes.data.hardware[hard])
@@ -700,12 +804,19 @@ export default defineComponent({
       hardwareLoad,
       machinesLoad,
       forkLoad, ruleFormRef, ruleLoad,
-      sleepChange, hardwareFun, close, forkDuplicate, nameExist, availableChange
+      sleepChange, hardwareFun, close, forkDuplicate, nameExist, availableChange, regionChange
     }
   }
 })
 </script>
 <style lang="scss" scoped>
+.span-available {
+  font-size: 12px;
+  line-height: 1;
+  .info {
+    margin: 0 0 0 3px;
+  }
+}
 #hardware {
   width: 100%;
   .space-hard {
@@ -1107,7 +1218,6 @@ export default defineComponent({
 
             .price {
               margin-top: 0.05rem;
-
               b {
                 padding: 0.03rem 0.08rem;
                 background: rgba(243, 244, 246, 1);
@@ -1396,7 +1506,6 @@ export default defineComponent({
 
         .price {
           margin-top: 0.05rem;
-
           b {
             padding: 0.03rem 0.08rem;
             background: rgba(243, 244, 246, 1);
@@ -1478,6 +1587,10 @@ export default defineComponent({
           font-size: 13px;
         }
 
+        .span-available {
+          font-size: inherit;
+        }
+
         .el-select {
           margin: 0 0.08rem;
 
@@ -1495,11 +1608,11 @@ export default defineComponent({
           }
 
           &.m-region {
-            margin: 0;
+            margin: 0 0.1rem 0 0;
 
             .el-input {
               .el-input__inner {
-                max-width: 155px;
+                max-width: 165px;
               }
             }
           }

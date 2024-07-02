@@ -10,7 +10,7 @@
           <div class="top_button">
             <router-link :to="{path: '/create_space'}" class="button">Create new Space</router-link>
             or
-            <a href="https://docs.lagrangedao.org/spaces" target="_blank">learn more about Spaces</a>
+            <a href="https://docs.lagrange.computer/spaces" target="_blank">learn more about Spaces</a>
           </div>
         </div>
       </el-col>
@@ -18,7 +18,7 @@
         <div class="top flex-row">
           <div class="top_input flex-row">
             <div>
-              <el-input v-model="searchValue" clearable @input="searchChange()" class="search_name w-50 m-2" placeholder="search Space" />
+              <el-input v-model="searchValue" clearable @change="searchChange()" @input="searchChange()" class="search_name w-50 m-2" placeholder="search Space" />
             </div>
             <div class="top_input_search">
               <el-select v-model="optionsValue" @change="sortChange" class="m-2" placeholder="Sort: Alphabetical">
@@ -45,7 +45,7 @@
                   <template #header>
                     <div class="card-header">
                       <span class="left background" v-if="ls.status === 'Running' ||ls.status === 'Deploying'">{{ls.status}}
-                        <a v-if="ls.status === 'Running' && ls.activeOrder.config.hardware_type.indexOf('GPU') > -1">on
+                        <a v-if="ls.status === 'Running' && ls.activeOrder && ls.activeOrder.config && ls.activeOrder.config.hardware_type.indexOf('GPU') > -1">on
                           <i>{{ ls.activeOrder.config.hardware}}</i>
                         </a>
                       </span>
@@ -83,7 +83,7 @@
                   <template #header>
                     <div class="card-header">
                       <span class="left background" v-if="list.status === 'Running' ||list.status === 'Deploying'">{{list.status}}
-                        <a v-if="list.status === 'Running' && list.activeOrder.config.hardware_type.indexOf('GPU') > -1">on
+                        <a v-if="list.status === 'Running' && list.activeOrder && list.activeOrder.config && list.activeOrder.config.hardware_type.indexOf('GPU') > -1">on
                           <i>{{list.activeOrder.config.hardware}}</i>
                         </a>
                       </span>
@@ -169,12 +169,11 @@ export default defineComponent({
       pagin.pageNo = currentPage
       init()
     }
-    async function searchChange (val) {
-      // spaceData.value = await filterData(spaceDataAll.value, val)
+    const searchChange = system.$commonFun.debounce(async function (val) {
       pagin.pageNo = 1
       const name = val ? val.wallet_address : ''
       init(name)
-    }
+    }, 700)
     function clearMethod (type) {
       searchValue.value = ''
       pagin.pageNo = 1
