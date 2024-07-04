@@ -89,6 +89,8 @@
         <div class="deployment" v-else-if="listdata.space.status && listdata.space.status.toLowerCase() === 'closed'">
           <div>
             <p class="m">The space owner has closed the running space.</p>
+            <p v-if="metaAddress && metaAddress === route.params.wallet_address">You can
+              <el-button plain @click="hardRedeploy">Redeploy</el-button> it.</p>
           </div>
         </div>
         <div class="deployment" v-else-if="listdata.space.status === 'Expired'">
