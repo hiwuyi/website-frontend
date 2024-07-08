@@ -269,7 +269,7 @@ export default defineComponent({
           console.log('err', err)
           arr[j].job_textUri = ''
         }
-        if (arr[j].job_result_uri) arrJob.push(arr[j])
+        if (arr[j].job_real_uri) arrJob.push(arr[j])
       }
       return arrJob
     }
