@@ -8,7 +8,7 @@ let lastTime = 0
 async function sendRequest(apilink, type, jsonObject, api_token) {
   // signOutFun()
   // axios.defaults.timeout = 60000
-  axios.defaults.headers.common['Authorization'] = `Bearer ${api_token?api_token:store.state.accessToken}`
+  axios.defaults.headers.common['Authorization'] = `Bearer ${api_token ? api_token : store.state.accessToken}`
   try {
     let response
     switch (type) {
@@ -76,11 +76,11 @@ async function Init(callback) {
           return false
         }
         web3Init.eth.getAccounts().then(async webAccounts => {
-            store.dispatch('setMetaAddress', webAccounts[0])
-            // const chainId = await providerInit.request({ method: 'eth_chainId' })
-            // console.log(parseInt(chainId, 16))
-            callback(webAccounts[0])
-          })
+          store.dispatch('setMetaAddress', webAccounts[0])
+          // const chainId = await providerInit.request({ method: 'eth_chainId' })
+          // console.log(parseInt(chainId, 16))
+          callback(webAccounts[0])
+        })
           .catch(async (error) => {
             store.dispatch('setMetaAddress', accounts[0])
             callback(accounts[0])
@@ -92,7 +92,7 @@ async function Init(callback) {
         router.push({
           name: 'spaces'
         })
-        if (error === "User rejected provider access") {} else {
+        if (error === "User rejected provider access") { } else {
           alert("Please unlock MetaMask and switch to the correct network.");
           return false
         }
@@ -222,7 +222,7 @@ function momentFun(dateItem, type) {
   }
   dateNew = dateNew ?
     type ? moment(new Date(parseInt(dateNew))).format('YYYY-MM-DD HH:mm:ss') :
-    moment(new Date(parseInt(dateNew))).format('YYYY-MM-DD HH:mm:ss') + ` (${dataUnit})` :
+      moment(new Date(parseInt(dateNew))).format('YYYY-MM-DD HH:mm:ss') + ` (${dataUnit})` :
     '-'
   return dateNew
 }
@@ -273,7 +273,6 @@ async function getUnit(id) {
     case 80001:
       unit = 'MATIC'
       name = 'Mumbai Testnet '
-      // url = `${process.env.VUE_APP_MUMBAIBLOCKURL}/address/`
       url = `${process.env.VUE_APP_MUMBAIPAYMENTURL}/address/`
       url_tx = `${process.env.VUE_APP_MUMBAIPAYMENTURL}/tx/`
       break
@@ -415,7 +414,7 @@ async function changeIDLogin(type) {
   })
   const list = [80001]
   const getPast = await list.some(t => t === parseInt(chainId, 16))
-  if (type) {} else if (!getPast) messageTip('error', 'Switch to Mumbai Testnet!')
+  if (type) { } else if (!getPast) messageTip('error', 'Switch to Mumbai Testnet!')
   return getPast
 }
 
@@ -533,6 +532,24 @@ function strToHexCharCode(str) {
   return `0x${code.toString(16)}`
 }
 
+function debounce(fn, delay) {
+  if (typeof fn !== 'function') {
+    throw new TypeError('Fn is not a function')
+  }
+  let timer;
+  return function () {
+    var _this = this;
+    var args = arguments;
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(function () {
+      fn.apply(_this, args);
+    }, delay);
+  };
+}
+
+
 function cmOptions(owner) {
   return {
     mode: 'text/x-markdown', // Language mode
@@ -596,6 +613,7 @@ export default {
   strToHexCharCode,
   cmOptions,
   expireTimeFun,
+  debounce,
   gatewayGain,
   providerInit
 }
