@@ -86,7 +86,7 @@ export default defineComponent({
         '\n\n' +
         `${typeName} Name: ${route.params.name} ` +
         '\n' +
-        `${typeName} Link: https://lagrangedao.org/${urlType}/${route.params.wallet_address}/${route.params.name}/card` +
+        `${typeName} Link: https://lagrange.computer/${urlType}/${route.params.wallet_address}/${route.params.name}/card` +
         '\n\n' +
         `#LagrangeDAO #DecentralizedComputing #Web3GitHub`
       system.$commonFun.popupwindow(text);

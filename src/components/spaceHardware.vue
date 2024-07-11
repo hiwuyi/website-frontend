@@ -25,7 +25,7 @@
               <div class="title_tip flex-row pause_margin">
                 <p class="flex-row">
                   Pause Space
-                  <svg @click="system.$commonFun.goLink('https://docs.lagrangedao.org/spaces/space-settings/instance-type')" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em"
+                  <svg @click="system.$commonFun.goLink('https://docs.lagrange.computer/spaces/space-settings/instance-type')" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em"
                     height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
                     <path d="M17 22v-8h-4v2h2v6h-3v2h8v-2h-3z" fill="currentColor"></path>
                     <path d="M16 8a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 16 8z" fill="currentColor"></path>
@@ -336,6 +336,7 @@ import { useRouter, useRoute } from 'vue-router'
 
 import ClientPaymentABI from '@/utils/abi/ClientPayment.json'
 import tokenABI from '@/utils/abi/tokenLLL.json'
+import swanTokenABI from '@/utils/abi/SwanToken.json'
 import {
   CircleCheckFilled
 } from '@element-plus/icons-vue'
@@ -437,7 +438,7 @@ export default defineComponent({
     const filesList = ref([])
     const dialogWidth = ref(document.body.clientWidth < 992 ? '90%' : '800px')
     let tokenAddress = process.env.VUE_APP_SATURN_TOKEN_ADDRESS
-    let tokenContract = new system.$commonFun.web3Init.eth.Contract(tokenABI, tokenAddress);
+    let tokenContract = new system.$commonFun.web3Init.eth.Contract(process.env.NODE_ENV === 'mainnet'?swanTokenABI:tokenABI, tokenAddress);
     let paymentContractAddress = process.env.VUE_APP_HARDWARE_ADDRESS
     let paymentContract = new system.$commonFun.web3Init.eth.Contract(ClientPaymentABI, paymentContractAddress)
 
@@ -511,6 +512,7 @@ export default defineComponent({
         fd.append('wallet', store.state.metaAddress)
         const taskRes = await system.$commonFun.sendRequest(`${process.env.VUE_APP_BASEAPI}space/deployment`, 'post', fd)
         if (taskRes && taskRes.status === "success") return taskRes.data.task.uuid
+        else if(taskRes.message) system.$commonFun.messageTip('error', taskRes.message)
       } catch{ return null }
     }
 
@@ -559,7 +561,7 @@ export default defineComponent({
 
     async function networkEstimate () {
       const getID = await system.$commonFun.web3Init.eth.net.getId()
-      const list = [20241133]
+      const list = [254]
       const getPast = await list.some(t => t === getID)
       if (getPast) return true
       else {

@@ -301,6 +301,9 @@ export default defineComponent({
   @media screen and (min-width: 1200px) {
     max-width: 1200px;
   }
+  @media screen and (min-width: 1360px) {
+    max-width: 1300px;
+  }
   @media screen and (min-width: 1536px) {
     max-width: 1536px;
   }

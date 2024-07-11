@@ -29,7 +29,7 @@
                 <router-link to="/spaces">
                     Spaces
                 </router-link>
-                <a href="https://docs.lagrangedao.org" target="_blank">
+                <a href="https://docs.lagrange.computer" target="_blank">
                     Docs
                 </a>
                 <a href="" target="_blank">
