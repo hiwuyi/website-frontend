@@ -935,7 +935,7 @@ export default defineComponent({
         '\n' +
         `${typeName} Link: ${process.env.VUE_APP_DOMAINLINK}/${urlType}/${route.params.wallet_address}/${route.params.name}/card` +
         '\n\n' +
-        `#LagrangeDAO #DecentralizedComputing #Web3GitHub`
+        `#Lagrange #DecentralizedComputing #Web3GitHub`
       system.$commonFun.popupwindow(text);
     }
 
