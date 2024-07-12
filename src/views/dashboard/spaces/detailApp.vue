@@ -74,7 +74,8 @@
               <div class="flex-row log-title">
                 <div class="flex-row">
                   <div class="flex-row log">
-                    <p class="text-base font-semibold">Container logs:</p>
+                    <p class="text-base font-semibold" v-if="listdata.cpList.error_log_container">Container logs:</p>
+                    <p class="text-base font-semibold" v-else-if="listdata.cpList.error_log_build">Build logs:</p>
                   </div>
                 </div>
               </div>
