@@ -111,12 +111,12 @@ export default defineComponent({
           {
             name: 'Learn',
             path: '',
-            link: 'https://docs.lagrangedao.org/lagrange-dao/spaces/create-space'
+            link: 'https://docs.lagrange.computer/lagrange-dao/spaces/create-space'
           },
           {
             name: 'Documentation',
             path: '',
-            link: 'https://docs.lagrangedao.org/'
+            link: 'https://docs.lagrange.computer/'
           },
           {
             name: 'Blog',
@@ -126,7 +126,7 @@ export default defineComponent({
           {
             name: 'Service Status',
             path: '',
-            link: 'https://provider.lagrangedao.org/provider-status'
+            link: 'https://provider.lagrange.computer/provider-status'
           }
         ]
       },
