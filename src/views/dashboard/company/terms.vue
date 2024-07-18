@@ -9,8 +9,8 @@
     <p>Please
       <strong>read these Terms carefully</strong> as they contain important information about what we do and do not offer, and what you can and cannot do.</p>
     <p>Whenever you want to use or purchase the Services that we provide at
-      <a href="https://lagrangedao.org/main" target="_blank">https://lagrangedao.org/main</a> and related sites (the "Website"), these Terms of Service, together with our Supplemental Terms, notices and policies available at
-      <a href="https://lagrangedao.org/main" target="_blank">https://lagrangedao.org/main</a> and/or any other binding document that we provide and/or that you sign (the
+      <a href="https://lagrange.computer/main" target="_blank">https://lagrange.computer/main</a> and related sites (the "Website"), these Terms of Service, together with our Supplemental Terms, notices and policies available at
+      <a href="https://lagrange.computer/main" target="_blank">https://lagrange.computer/main</a> and/or any other binding document that we provide and/or that you sign (the
       <strong>“Terms”</strong> or the
       <strong>“Agreement”</strong>) will apply to you.</p>
     <p>In other words, these Terms are a
@@ -37,11 +37,11 @@
     </p>
     <p>
       <strong>"Agreement"</strong> or "Terms" refer to all of the terms and conditions that apply between us. They include these Terms, Supplemental Terms, notices and policies available at
-      <a href="https://lagrangedao.org/main" target="_blank">https://lagrangedao.org/main</a>, and/or any other binding document that we provide and/or that you sign, including but not limited to an Order Form, a Scope of Work or a Master Services Agreement.
+      <a href="https://lagrange.computer/main" target="_blank">https://lagrange.computer/main</a>, and/or any other binding document that we provide and/or that you sign, including but not limited to an Order Form, a Scope of Work or a Master Services Agreement.
     </p>
     <p>
       <strong>"Inference API"</strong> refers to hosted services available on
-      <a href="https://lagrangedao.org/main" target="_blank">https://lagrangedao.org/main</a> that let you, individuals, companies or organizations, run inference via application programming interface on machine learning models publicly or privately hosted on Lagrange's model hub.
+      <a href="https://lagrange.computer/main" target="_blank">https://lagrange.computer/main</a> that let you, individuals, companies or organizations, run inference via application programming interface on machine learning models publicly or privately hosted on Lagrange's model hub.
     </p>
     <p>
       <strong>"Content"</strong> refers to any material posted, displayed, or accessed on our Website or Hub, including but not limited to code, data, text, graphics, images, applications, or software you, we, or any third party provide or make available.
@@ -63,11 +63,11 @@
     </p>
     <p>
       <strong>"Lagrange Open-Source Libraries"</strong> refers to the Lagrange open-source software projects available at
-      <a href="https://lagrangedao.org/main" target="_blank">https://lagrangedao.org/main</a>, including Transformers, Datasets and Tokenizers.
+      <a href="https://lagrange.computer/main" target="_blank">https://lagrange.computer/main</a>, including Transformers, Datasets and Tokenizers.
     </p>
     <p>
       <strong>"Infinity Service"</strong> refers to the containerized solution to deploy end-to-end optimized inference pipelines for state of the art Transformers Models, available at
-      <a href="https://lagrangedao.org/main" target="_blank">https://lagrangedao.org/main</a>
+      <a href="https://lagrange.computer/main" target="_blank">https://lagrange.computer/main</a>
     </p>
     <p>
       <strong>"Machine Learning Application"</strong> refers to a repository hosted on the Hub that allows a User to showcase Machine Learning experiments.
@@ -219,7 +219,7 @@
     </p>
     <p>Our
       <strong>plans</strong> and fees payable for the use of the Services you decide to purchase are available at
-      <a href="https://lagrangedao.org/main" target="_blank">https://lagrangedao.org/main</a>. You may decide to choose a
+      <a href="https://lagrange.computer/main" target="_blank">https://lagrange.computer/main</a>. You may decide to choose a
       <strong>custom plan</strong>, in which case the payable fees and payment terms will be subject to further discussions and mutual agreement with us, and will be specified in the applicable Services Agreement, Order Form or any other binding document
       signed between us.
     </p>
@@ -463,7 +463,7 @@
     </p>
     <p>
       <strong>Entire Agreement.</strong> These Terms, together with all of the terms, policies and notices available at
-      <a href="https://lagrangedao.org/main" target="_blank">https://lagrangedao.org/main</a>, or any other binding documents we provide, or agreements provided or executed by us, constitute the
+      <a href="https://lagrange.computer/main" target="_blank">https://lagrange.computer/main</a>, or any other binding documents we provide, or agreements provided or executed by us, constitute the
       <strong>entire agreement</strong> between us, and
       <strong>supersedes</strong> all previous negotiations, proposals, commitments, writings, oral statement and understanding of any nature whatsoever. Any standard form purchase order or similar document you provided us or reference in any payment
       is expressly rejected if it differs from, or adds to, these Terms.

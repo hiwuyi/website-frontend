@@ -282,6 +282,12 @@ async function getUnit(id) {
       url = `${process.env.VUE_APP_SATURNBLOCKURL}/address/`
       url_tx = `${process.env.VUE_APP_SATURNBLOCKURL}/tx/`
       break
+    case 254:
+      unit = 'sETH'
+      name = 'Swan Mainnet '
+      url = `${process.env.VUE_APP_SWANMAINNETBLOCKURL}/address/`
+      url_tx = `${process.env.VUE_APP_SWANMAINNETBLOCKURL}/tx/`
+      break
     case 3141:
       unit = 'ETH'
       name = 'Filecoin - Hyperspace testnet '
@@ -351,6 +357,19 @@ async function walletChain(chainId) {
         },
         rpcUrls: [process.env.VUE_APP_SATURNURL],
         blockExplorerUrls: [process.env.VUE_APP_SATURNBLOCKURL]
+      }
+      break
+    case 254:
+      text = {
+        chainId: web3Init.utils.numberToHex(254),
+        chainName: 'Swan Mainnet',
+        nativeCurrency: {
+          name: 'sETH',
+          symbol: 'sETH', // 2-6 characters long
+          decimals: 18
+        },
+        rpcUrls: [process.env.VUE_APP_SWANMAINNETURL],
+        blockExplorerUrls: [process.env.VUE_APP_SWANMAINNETBLOCKURL]
       }
       break
     case 20241133:
@@ -548,7 +567,6 @@ function debounce(fn, delay) {
     }, delay);
   };
 }
-
 
 function cmOptions(owner) {
   return {
