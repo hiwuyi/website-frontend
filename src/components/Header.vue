@@ -179,7 +179,7 @@ export default defineComponent({
       if (key === 'personal_center') {
         router.push({ path: '/personal_center' })
         store.dispatch('setNavLogin', true)
-      } else if (key === '4') window.open('https://docs.lagrangedao.org')
+      } else if (key === '4') window.open('https://docs.lagrange.computer')
       else if (key === 'asProvider') router.push({ name: 'paymentHistory', query: { type: 'provider' } })
       else if (key === 'asUser') router.push({ name: 'paymentHistory', query: { type: 'user' } })
       else if (key === 'dataset') router.push({ path: '/dataset' })
