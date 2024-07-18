@@ -474,8 +474,12 @@ export default defineComponent({
             from: store.state.metaAddress, gasLimit: Math.floor(approveGasLimit * 1.5)
           })
 
-        let payMethod = paymentContract.methods
-          .submitPayment(tastUUID, sleepSelect.value.hardware_id, ruleForm.usageTime * 3600)
+        let payMethod = props.renewButton === 'renew' ?
+              paymentContract.methods
+                .renewPayment(tastUUID, sleepSelect.value.hardware_id, ruleForm.usageTime * 3600)
+              :
+              paymentContract.methods
+                .submitPayment(tastUUID, sleepSelect.value.hardware_id, ruleForm.usageTime * 3600)
 
         let gasLimit = await payMethod.estimateGas({ from: store.state.metaAddress })
         const tx = await payMethod.send({ from: store.state.metaAddress, gasLimit: Math.floor(gasLimit * 1.5) })
