@@ -570,7 +570,7 @@ export default defineComponent({
       let arrJob = []
       let status = spaceCont.status || ''
       for (let j = 0; j < arr.length; j++) {
-        if (arr[j] && arr[j].status && !((status && status.toLowerCase() === 'running') && arr[j].status.toLowerCase() === "failed")) {
+        if (arr[j] && arr[j].status && arr[j].status.toLowerCase() === "running" && (status && status.toLowerCase() === 'running')) {
           try {
             if (arr[j].job_real_uri) arr[j].job_result_uri = arr[j].job_real_uri
             else if (arr[j].job_result_uri) {
@@ -604,7 +604,7 @@ export default defineComponent({
               containerLog: [],
               ws: null
             })
-          } else if (arr[j] && arr[j].status && arr[j].status.toLowerCase() !== "failed") {
+          } else if (space && space.status === "Running" && (arr[j] && arr[j].status && arr[j].status.toLowerCase() === "running")) {
             let spaceCont = space || {}
             logArr.push({
               job: arr[j],
