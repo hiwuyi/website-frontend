@@ -853,7 +853,7 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .span-available {
   font-size: 12px;
   line-height: 1;

@@ -93,7 +93,7 @@ export default defineComponent({
     }
 })
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .share_pop {
   .share_style {
     justify-content: center;

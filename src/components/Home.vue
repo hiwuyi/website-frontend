@@ -102,7 +102,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .wrapper {
   min-height: 100vh;
   .content {
@@ -163,7 +163,7 @@ export default defineComponent({
   }
 }
 </style>
-<style lang="scss">
+<style lang="less">
 .popper_style {
   padding: 0.05rem 0 !important;
   word-break: break-word;

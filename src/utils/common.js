@@ -2,7 +2,9 @@ import store from '../store'
 import {
   ElMessage
 } from 'element-plus'
-import router from '../router';
+import router from '../router'
+import config from './config.js'
+import { disconnect } from '@wagmi/core'
 let lastTime = 0
 
 async function sendRequest(apilink, type, jsonObject, api_token) {
@@ -83,6 +85,7 @@ async function Init(callback) {
         })
           .catch(async (error) => {
             store.dispatch('setMetaAddress', accounts[0])
+            store.dispatch('setSignAddress', accounts[0])
             callback(accounts[0])
           })
       })
@@ -141,8 +144,9 @@ async function sign(nonce) {
   }).then(sig => {
     signErr = ''
     signature = sig
-  }).catch(err => {
+  }).catch(async err => {
     console.log(err)
+    await disconnect(config.config)
     signature = ''
     signErr = err && err.code ? String(err.code) : err
     signOutFun()
@@ -188,7 +192,11 @@ async function messageTip(type, text, HTMLString) {
   })
 }
 
-async function signOutFun() {
+async function signOutFun(status) {
+  if (store.state.accessToken || status) {
+    await disconnect(config.config)
+    store.dispatch('setSignAddress', '')
+  }
   store.dispatch('setAccessToken', '')
   store.dispatch('setLogin', false)
   store.dispatch('setNavLogin', false)
