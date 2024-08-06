@@ -248,8 +248,8 @@
             </div>
             <div class="time flex-row wrap">
               <!-- :max="sleepSelect.hardware_type.indexOf('GPU') > -1? 168:336" -->
-              <el-input-number v-model="ruleForm.usageTime" :min="1" :precision="0" :step="1" controls-position="right" @change="getAmount" /> &nbsp; hours
-              <div class="flex-row balance-tip">If your account balance is not enough for the time. It automatically changes to your affordable time.</div>
+              <el-input-number v-model="ruleForm.usageTime" :min="1" :max="sleepSelect.hardware_id === 0 ? 168 : 'Infinity'" :precision="0" :step="1" controls-position="right" @change="getAmount" /> &nbsp; hours
+              <div class="flex-row balance-tip" v-if="tipBalance">Your account balance is not enough for the time. You can afford <b>{{ maxUsage }}</b> hours, please change your Usage Time.</div>
             </div>
           </div>
           <div v-if="props.renewButton !== 'renew'">
@@ -317,14 +317,14 @@
             <router-link to="">billing settings</router-link>
             .
           </p>
-          <div v-if="props.renewButton !== 'renew'">
-            Estimated Cost: {{ etherApprove }} SWAN
-          </div>
         </div>
       </div>
 
       <template #footer>
-        <span class="dialog-footer">
+        <span class="dialog-footer flex-row">
+          <div v-if="props.renewButton !== 'renew'" class="cost">
+            Estimated Cost: <b>{{ etherApprove }} SWAN</b>
+          </div>
           <el-button-group class="flex-row">
             <el-button @click="hardwareFun" :disabled="hardwareLoad || !userTokenBalance || (Number(userTokenBalance) < Number(etherApprove) && props.renewButton !== 'renew')">{{props.renewButton === 'renew'?'Renew':'Confirm new hardware'}}</el-button>
             <el-button @click="close" :disabled="hardwareLoad">Cancel</el-button>
@@ -448,6 +448,8 @@ export default defineComponent({
     const weiApprove = ref('')
     const etherApprove = ref('')
     const userTokenBalance = ref('')
+    const tipBalance = ref(false)
+    const maxUsage = ref('')
 
     async function getAmount() {
       try{
@@ -460,9 +462,11 @@ export default defineComponent({
 
         if(Number(userTokenBalance.value) < Number(etherApprove.value)) {
           const usage = Math.floor(Number(userTokenBalance.value) / Number(priceEther))
-          ruleForm.usageTime = usage
+          // ruleForm.usageTime = usage
+          maxUsage.value = usage
+          tipBalance.value = true
           getAmount()
-        }
+        } else tipBalance.value = false
       } catch {}
     }
     async function getUserBalance() {
@@ -843,7 +847,7 @@ export default defineComponent({
       hardwareOptions,
       hardwareLoad,
       machinesLoad,
-      forkLoad, ruleFormRef, ruleLoad, etherApprove, userTokenBalance,
+      forkLoad, ruleFormRef, ruleLoad, etherApprove, userTokenBalance, tipBalance, maxUsage,
       sleepChange, hardwareFun, close, forkDuplicate, nameExist, availableChange, regionChange, getAmount
     }
   }
@@ -1635,6 +1639,11 @@ export default defineComponent({
         .balance-tip{
           width: 100%;
           font-size: 12px;
+          color: red;
+          b{
+            padding: 0 2px;
+            font-size: 14px;
+          }
         }
 
         .el-select {
@@ -1708,6 +1717,14 @@ export default defineComponent({
     text-align: left;
 
     .dialog-footer {
+      .cost{
+        margin-right: 0.16rem;
+        font-size: 16px;
+        font-weight: bold;
+        b{
+          color: #1890FF;
+        }
+      }
       .el-button-group {
         margin: 0;
 
