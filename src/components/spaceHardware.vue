@@ -249,7 +249,7 @@
             <div class="time flex-row wrap">
               <!-- :max="sleepSelect.hardware_type.indexOf('GPU') > -1? 168:336" -->
               <el-input-number v-model="ruleForm.usageTime" :min="1" :max="sleepSelect.hardware_id === 0 ? 168 : 'Infinity'" :precision="0" :step="1" controls-position="right" @change="getAmount" /> &nbsp; hours
-              <div class="flex-row balance-tip" v-if="tipBalance">Your account balance is not enough for the time. You can afford <b>{{ maxUsage }}</b> hours, please change your Usage Time.</div>
+              <div class="flex-row balance-tip" v-if="tipBalance">Your account balance is not enough for the time. You can afford <b>{{ maxUsage }}</b> hours.</div>
             </div>
           </div>
           <div v-if="props.renewButton !== 'renew'">
@@ -1637,11 +1637,12 @@ export default defineComponent({
           font-size: inherit;
         }
         .balance-tip{
+          align-items: baseline;
           width: 100%;
           font-size: 12px;
           color: red;
           b{
-            padding: 0 2px;
+            padding: 0 3px;
             font-size: 14px;
           }
         }
