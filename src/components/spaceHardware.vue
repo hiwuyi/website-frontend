@@ -1635,11 +1635,18 @@ export default defineComponent({
         }
         &.disabled {
           .el-input-number {
-            border: 1px solid red;
-            border-radius: 5px;
             .el-input__inner{
               border-color: red;
             }
+          }
+        }
+        .el-input-number {
+          height: 32px;
+          .el-input-number__increase, .el-input-number__decrease{
+            display: none;
+          }
+          .el-input__inner{
+            padding: 0 0.15rem;
           }
         }
         .span-available {
