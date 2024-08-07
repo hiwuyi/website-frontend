@@ -246,9 +246,9 @@
               </div>
               <el-divider/>
             </div>
-            <div class="time flex-row wrap">
+            <div class="time flex-row wrap" :class="`${tipBalance?'disabled':''}`">
               <!-- :max="sleepSelect.hardware_type.indexOf('GPU') > -1? 168:336" -->
-              <el-input-number v-model="ruleForm.usageTime" :min="1" :max="sleepSelect.hardware_id === 0 ? 168 : 'Infinity'" :precision="0" :step="1" controls-position="right" @change="getAmount" /> &nbsp; hours
+              <el-input-number v-model="ruleForm.usageTime" :min="1" :max="sleepSelect.hardware_id === 0 ? 168 : 9999999" :precision="0" :step="1" controls-position="right" @change="getAmount" /> &nbsp; hours
               <div class="flex-row balance-tip" v-if="tipBalance">Your account balance is not enough for the time. You can afford <b>{{ maxUsage }}</b> hours.</div>
             </div>
           </div>
@@ -321,14 +321,14 @@
       </div>
 
       <template #footer>
-        <span class="dialog-footer flex-row">
-          <div v-if="props.renewButton !== 'renew'" class="cost">
-            Estimated Cost: <b>{{ etherApprove }} SWAN</b>
-          </div>
+        <span class="dialog-footer flex-row space-between">
           <el-button-group class="flex-row">
             <el-button @click="hardwareFun" :disabled="hardwareLoad || !userTokenBalance || (Number(userTokenBalance) < Number(etherApprove) && props.renewButton !== 'renew')">{{props.renewButton === 'renew'?'Renew':'Confirm new hardware'}}</el-button>
             <el-button @click="close" :disabled="hardwareLoad">Cancel</el-button>
           </el-button-group>
+          <div v-if="props.renewButton !== 'renew'" class="cost">
+            Estimated Cost: <b>{{ etherApprove }} SWAN</b>
+          </div>
         </span>
       </template>
     </el-dialog>
@@ -465,7 +465,7 @@ export default defineComponent({
           // ruleForm.usageTime = usage
           maxUsage.value = usage
           tipBalance.value = true
-          getAmount()
+          // getAmount()
         } else tipBalance.value = false
       } catch {}
     }
@@ -1632,7 +1632,11 @@ export default defineComponent({
         @media screen and (max-width: 768px) {
           font-size: 13px;
         }
-
+        &.disabled {
+          .el-input-number .el-input__inner{
+            border-color: red;
+          }
+        }
         .span-available {
           font-size: inherit;
         }
