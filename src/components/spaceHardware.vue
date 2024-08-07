@@ -459,6 +459,7 @@ export default defineComponent({
         const approveAmount = (pricePerHour * ruleForm.usageTime).toFixed(6) // usdc is 6 decimal, ensure the amount will not be more than 6
         weiApprove.value = system.$commonFun.web3Init.utils.toWei(String(approveAmount), 'mwei')
         etherApprove.value = system.$commonFun.web3Init.utils.fromWei(weiApprove.value, 'ether')
+        etherApprove.value = Number(etherApprove.value).toFixed(2)
 
         if(Number(userTokenBalance.value) < Number(etherApprove.value)) {
           const usage = Math.floor(Number(userTokenBalance.value) / Number(priceEther))
@@ -1633,8 +1634,12 @@ export default defineComponent({
           font-size: 13px;
         }
         &.disabled {
-          .el-input-number .el-input__inner{
-            border-color: red;
+          .el-input-number {
+            border: 1px solid red;
+            border-radius: 5px;
+            .el-input__inner{
+              border-color: red;
+            }
           }
         }
         .span-available {
