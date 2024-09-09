@@ -4,7 +4,7 @@
       <template #title>
         <div class="flex-row">
           This is a Lagrange Computer testnet. You can test and deploy your application here with no cost. If you have any question, see doc&nbsp;
-          <a href="https://docs.swanchain.io/swan-chain/atom-accelerator-race/before-you-get-started" target="_blank" class="font-14">
+          <a href="https://docs.lagrange.computer/getting-started/how-to-use-the-test-environment" target="_blank" class="font-14">
            here
           </a>
           .
