@@ -3,7 +3,7 @@
     <el-alert center class="alert-body" v-if="route.name === 'main'">
       <template #title>
         <div class="flex-row">
-          This is a Lagrange Compute testnet. You can test and deploy your application here with no cost. If you have any question, see doc&nbsp;
+          This is a Lagrange Computer testnet. You can test and deploy your application here with no cost. If you have any question, see doc&nbsp;
           <a href="https://docs.swanchain.io/swan-chain/atom-accelerator-race/before-you-get-started" target="_blank" class="font-14">
            here
           </a>
@@ -118,7 +118,7 @@ export default defineComponent({
   min-height: 100vh;
   :deep(.alert-body) {
     padding: 8px 0;
-    background-color: #000;
+    background-color: #7405ff;
     color: #fff;
     border-radius: 0;
     line-height: 1;
