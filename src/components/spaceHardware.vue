@@ -604,7 +604,7 @@ export default defineComponent({
     async function networkEstimate () {
       const getID = await system.$commonFun.web3Init.eth.net.getId()
       const list = [20241133]
-      const getPast = await list.some(t => t === getID)
+      const getPast = await list.some(t => Number(t) === Number(getID))
       if (getPast) return true
       else {
         context.emit('handleHard', false, false, true)
