@@ -606,7 +606,7 @@ export default defineComponent({
     async function networkEstimate () {
       const getID = await system.$commonFun.web3Init.eth.net.getId()
       const list = [254]
-      const getPast = await list.some(t => t === getID)
+      const getPast = await list.some(t => Number(t) === Number(getID))
       if (getPast) return true
       else {
         context.emit('handleHard', false, false, true)
@@ -856,7 +856,7 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .span-available {
   font-size: 12px;
   line-height: 1;

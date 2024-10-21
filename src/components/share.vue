@@ -101,7 +101,7 @@ export default defineComponent({
   }
 })
 </script>
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .share_pop {
   width: 100%;
   .share_style {
