@@ -102,7 +102,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .wrapper {
   min-height: 100vh;
   .content {
@@ -163,7 +163,7 @@ export default defineComponent({
   }
 }
 </style>
-<style lang="scss">
+<style lang="less">
 .popper_style {
   padding: 0.05rem 0 !important;
   word-break: break-word;
@@ -300,6 +300,9 @@ export default defineComponent({
   }
   @media screen and (min-width: 1200px) {
     max-width: 1200px;
+  }
+  @media screen and (min-width: 1360px) {
+    max-width: 1300px;
   }
   @media screen and (min-width: 1536px) {
     max-width: 1536px;

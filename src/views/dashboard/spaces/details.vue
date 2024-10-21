@@ -209,9 +209,8 @@
                   </li>
                   <li :class="{'flex-row black-color': true, 'is-disabled':parentValue !== 'Running' ||!((expireTime.time <=3&&expireTime.unit!=='hours') ||(expireTime.time <=24&&expireTime.unit==='hours'))}" v-if="metaAddress && metaAddress === route.params.wallet_address">
                     <div class="m-width">
-                      <!-- <el-tooltip v-if="parentValue !== 'Running' || !((expireTime.time <=3&&expireTime.unit!=='hours') ||(expireTime.time <=24&&expireTime.unit==='hours'))" placement="bottom" content="The space expiration time can be renewed only when it is less than 72 hours">Renew</el-tooltip>
-                      <span v-else @click="hardwareOperate('renew')">Renew</span> -->
-                      <span>Renew</span>
+                      <el-tooltip v-if="parentValue !== 'Running' || !((expireTime.time <=3&&expireTime.unit!=='hours') ||(expireTime.time <=24&&expireTime.unit==='hours'))" placement="bottom" content="The space expiration time can be renewed only when it is less than 72 hours">Renew</el-tooltip>
+                      <span v-else @click="hardwareOperate('renew')">Renew</span>
                     </div>
                   </li>
                   <li :class="{'flex-row black-color': true, 'is-disabled': !nft.contract_address || nftTokens.length === 0 }" v-if="metaAddress && metaAddress !== route.params.wallet_address">
@@ -571,7 +570,7 @@ export default defineComponent({
       let arrJob = []
       let status = spaceCont.status || ''
       for (let j = 0; j < arr.length; j++) {
-        if (arr[j] && arr[j].status && !((status && status.toLowerCase() === 'running') && arr[j].status.toLowerCase() === "failed")) {
+        if (arr[j] && arr[j].status && arr[j].status.toLowerCase() === "running" && (status && status.toLowerCase() === 'running')) {
           try {
             if (arr[j].job_real_uri) arr[j].job_result_uri = arr[j].job_real_uri
             else if (arr[j].job_result_uri) {
@@ -605,7 +604,7 @@ export default defineComponent({
               containerLog: [],
               ws: null
             })
-          } else if (arr[j] && arr[j].status && arr[j].status.toLowerCase() !== "failed") {
+          } else if (space && space.status === "Running" && (arr[j] && arr[j].status && arr[j].status.toLowerCase() === "running")) {
             let spaceCont = space || {}
             logArr.push({
               job: arr[j],
@@ -934,7 +933,7 @@ export default defineComponent({
         '\n' +
         `${typeName} Link: ${process.env.VUE_APP_DOMAINLINK}/${urlType}/${route.params.wallet_address}/${route.params.name}/card` +
         '\n\n' +
-        `#LagrangeDAO #DecentralizedComputing #Web3GitHub`
+        `#Lagrange #DecentralizedComputing #Web3GitHub`
       system.$commonFun.popupwindow(text);
     }
 
@@ -1012,7 +1011,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 // @import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,600;1,700&display=swap");
 .space-height {
   min-height: 100vh;
@@ -1650,7 +1649,7 @@ export default defineComponent({
   }
 }
 </style>
-<style lang="scss">
+<style lang="less">
 .drawer_style {
   background-color: #fafafa;
   text-align: left;

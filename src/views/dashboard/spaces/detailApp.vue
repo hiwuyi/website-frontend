@@ -74,7 +74,8 @@
               <div class="flex-row log-title">
                 <div class="flex-row">
                   <div class="flex-row log">
-                    <p class="text-base font-semibold">Container logs:</p>
+                    <p class="text-base font-semibold" v-if="listdata.cpList.error_log_container">Container logs:</p>
+                    <p class="text-base font-semibold" v-else-if="listdata.cpList.error_log_build">Build logs:</p>
                   </div>
                 </div>
               </div>
@@ -89,6 +90,8 @@
         <div class="deployment" v-else-if="listdata.space.status && listdata.space.status.toLowerCase() === 'closed'">
           <div>
             <p class="m">The space owner has closed the running space.</p>
+            <p v-if="metaAddress && metaAddress === route.params.wallet_address">You can
+              <el-button plain @click="hardRedeploy">Redeploy</el-button> it.</p>
           </div>
         </div>
         <div class="deployment" v-else-if="listdata.space.status === 'Expired'">
@@ -244,8 +247,8 @@ export default defineComponent({
           listdata.jobResult = props.jobResult
           listdata.cpList = props.cpList
           if (props.listValue.data.space && props.listValue.data.space.status === 'Deploying' && props.listValue.data.job) listdata.jobs_status = await jobStatusList(props.listValue.data.job)
-          listdata.space = props.listValue.data.space
-          listdata.task = props.listValue.data.task
+          listdata.space = props.listValue.data.space || {}
+          listdata.task = props.listValue.data.task || {}
         }
       }
       context.emit('handleValue', false)
@@ -269,7 +272,7 @@ export default defineComponent({
           console.log('err', err)
           arr[j].job_textUri = ''
         }
-        if (arr[j].job_result_uri) arrJob.push(arr[j])
+        if (arr[j].job_real_uri) arrJob.push(arr[j])
       }
       return arrJob
     }
@@ -426,7 +429,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 #space {
   background: #fff;
   color: #333;

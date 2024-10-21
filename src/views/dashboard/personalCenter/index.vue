@@ -387,7 +387,8 @@ export default defineComponent({
         // console.log(getRouter.value)
         if (getRouter.value) router.push({ path: getRouter.value })
         else getdataList()
-      } else if (signErr !== '4001') signSetIn()
+      }
+      // else if (signErr !== '4001') signSetIn()
       // else window.location.reload()
       return false
       store.dispatch('setNavLogin', false)
@@ -557,7 +558,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 #dataset {
   position: relative;
   background: linear-gradient(90deg, #fbfbfc, #fff, #fff, #fff);
@@ -1773,7 +1774,7 @@ export default defineComponent({
   }
 }
 </style>
-<style lang="scss">
+<style lang="less">
 .message_style {
   width: 300px;
   max-height: 300px;
