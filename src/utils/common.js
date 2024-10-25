@@ -146,9 +146,8 @@ async function sign(nonce) {
   } catch {
     await disconnect(config.config)
     signature = ''
-    signErr = err && err.code ? String(err.code) : err
     signOutFun()
-    return [signature, signErr]
+    return [signature, 'error']
   }
 }
 
@@ -161,11 +160,11 @@ async function performSignin(sig) {
       store.dispatch('setLogin', true)
       return true
     }
-    messageTip('error', response.message || 'Fail')
+    if (response && response.message) messageTip('error', response.message || 'Fail')
     return null
   } catch (err) {
     console.log('login err:', err)
-    messageTip('error', 'Fail')
+    // messageTip('error', 'Fail')
     return null
   }
 }
