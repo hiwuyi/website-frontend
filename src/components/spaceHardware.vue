@@ -514,12 +514,14 @@ export default defineComponent({
             })
         }
 
+        const hardwarePricePerHour = system.$commonFun.web3Init.utils.toWei(String(sleepSelect.value.hardware_price), 'ether')
+        console.log('params:', tastUUID, sleepSelect.value.hardware_id, hardwarePricePerHour, ruleForm.usageTime * 3600)
         let payMethod = props.renewButton === 'renew' ?
               paymentContract.methods
-                .renewPayment(tastUUID, sleepSelect.value.hardware_id, ruleForm.usageTime * 3600)
+                .renewPayment(tastUUID, sleepSelect.value.hardware_id, hardwarePricePerHour, ruleForm.usageTime * 3600)
               :
               paymentContract.methods
-                .submitPayment(tastUUID, sleepSelect.value.hardware_id, ruleForm.usageTime * 3600)
+                .submitPrivatePayment(tastUUID, sleepSelect.value.hardware_id, hardwarePricePerHour, ruleForm.usageTime * 3600)
 
         let gasLimit = await payMethod.estimateGas({ from: store.state.metaAddress })
         const tx = await payMethod.send({ from: store.state.metaAddress, gasLimit: Math.floor(gasLimit * 1.5) })
@@ -796,7 +798,7 @@ export default defineComponent({
           sleepVisible.value = true
           return
         }
-        const machinesRes = await system.$commonFun.sendRequest(`${process.env.VUE_APP_BASEAPI}cp/machines`, 'get')
+        const machinesRes = await system.$commonFun.sendRequest(`${process.env.VUE_APP_MACHINE}cp/machines-dp`, 'get')
         if (machinesRes && machinesRes.status === 'success') {
           if (props.renewButton === 'renew') {
             if (props.listdata.activeOrder === null) return
