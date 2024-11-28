@@ -487,9 +487,13 @@ export default defineComponent({
           }
         }
 
-        const taskData = await getTaskUUid(weiApprove.value)
-        hardwareLoad.value = true
-        const tastUUID = props.renewButton === 'renew' ? props.listdata.task_uuid : taskData?.uuid
+        let tastUUID
+        if (props.renewButton === 'renew') {
+          tastUUID = props.listdata.task_uuid
+        } else {
+          const taskData = await getTaskUUid(weiApprove.value)
+          tastUUID = taskData?.uuid
+        }
         if (!tastUUID) {
           closePart()
           return
