@@ -451,14 +451,16 @@ export default defineComponent({
     const userTokenBalance = ref('')
     const tipBalance = ref(false)
     const maxUsage = ref('')
+    const pricePerHour = ref('')
 
     async function getAmount() {
-      try{
-        const price = await getTaskUUid(sleepSelect.value.hardware_price)
-        weiApprove.value = price.price_per_hour
+      try {
+        const approveAmount = Number(pricePerHour.value * ruleForm.usageTime).toFixed(6) 
+        weiApprove.value = system.$commonFun.web3Init.utils.toWei(String(approveAmount), 'mwei')
+        etherApprove.value = Number(approveAmount).toFixed(2)
 
         if(Number(userTokenBalance.value) < Number(etherApprove.value)) {
-          const usage = Math.floor(Number(userTokenBalance.value) / Number(weiApprove.value))
+          const usage = Math.floor(Number(userTokenBalance.value) / Number(pricePerHour.value))
           // ruleForm.usageTime = usage
           maxUsage.value = usage
           tipBalance.value = true
@@ -512,7 +514,8 @@ export default defineComponent({
             })
         }
 
-        const hardwarePricePerHour = system.$commonFun.web3Init.utils.toWei(String(sleepSelect.value.hardware_price), 'ether')
+        const proceCurrent = props.renewButton === 'renew' ? props.listTaskdata.price_per_hour : taskData?.price_per_hour
+        const hardwarePricePerHour = system.$commonFun.web3Init.utils.toWei(String(proceCurrent), 'ether')
         console.log('params:', tastUUID, sleepSelect.value.hardware_id, hardwarePricePerHour, ruleForm.usageTime * 3600)
         let payMethod = props.renewButton === 'renew' ?
               paymentContract.methods
@@ -543,7 +546,6 @@ export default defineComponent({
 
     async function getTaskUUid (wei) {
       try {
-        hardwareLoad.value = true
         const getID = await system.$commonFun.web3Init.eth.net.getId()
         let fd = new FormData()
         const price = system.$commonFun.web3Init.utils.toWei(String(wei*ruleForm.usageTime), 'ether')
@@ -557,13 +559,9 @@ export default defineComponent({
         fd.append('wallet', store.state.metaAddress)
         const taskRes = await system.$commonFun.sendRequest(`${process.env.VUE_APP_BASEAPI}space/deployment`, 'post', fd)
         if (taskRes && taskRes.status === "success") {
-          etherApprove.value = Number(taskRes.data.task.price_per_hour*ruleForm.usageTime).toFixed(2)
-          hardwareLoad.value = false
           return taskRes.data.task
         }
-        hardwareLoad.value = false
       } catch {
-        hardwareLoad.value = false
         return null
       }
     }
@@ -683,6 +681,7 @@ export default defineComponent({
       sleepSelect.value.available_resource = available_resource
       sleepSelect.value.whitelist = whitelist
       sleepSelect.value.regionOption = arr
+      pricePerHour.value = sleepSelect.value.hardware_price
       if (props.renewButton === 'renew') sleepSelect.value.regionValue = props.listdata.activeOrder && props.listdata.activeOrder.region ? props.listdata.activeOrder.region : 'Global'
       else sleepSelect.value.regionValue = "Global"
       await regionChange()
@@ -690,7 +689,6 @@ export default defineComponent({
       if (props.renewButton === 'renew') hardwareLoad.value = false
       else getAmount()
       sleepVisible.value = true
-      getTaskUUid(sleepSelect.value.hardware_price)
     }
 
     async function regionChange () {
@@ -808,8 +806,8 @@ export default defineComponent({
           }
           sleepSelect.value.regionValue = props.listdata.activeOrder && props.listdata.activeOrder.region ? props.listdata.activeOrder.region : 'Global'
           ruleForm.sleepTime = props.listdata.activeOrder.config.hardware_type.indexOf('GPU') > -1 ? '20' : '5'
+          pricePerHour.value = sleepSelect.value.hardware_price
           sleepVisible.value = true
-          getTaskUUid(sleepSelect.value.hardware_price)
           return
         }
         const machinesRes = await system.$commonFun.sendRequest(`${process.env.VUE_APP_BASEAPI}cp/machines_dp`, 'get')
