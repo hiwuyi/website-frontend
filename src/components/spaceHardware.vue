@@ -456,7 +456,7 @@ export default defineComponent({
     async function getAmount() {
       try {
         const approveAmount = Number(pricePerHour.value * ruleForm.usageTime).toFixed(6) 
-        weiApprove.value = system.$commonFun.web3Init.utils.toWei(String(approveAmount), 'mwei')
+        weiApprove.value = system.$commonFun.web3Init.utils.toWei(String(approveAmount), 'ether')
         etherApprove.value = Number(approveAmount).toFixed(2)
 
         if(Number(userTokenBalance.value) < Number(etherApprove.value)) {
@@ -487,11 +487,11 @@ export default defineComponent({
           }
         }
 
-        let tastUUID
+        let tastUUID, taskData
         if (props.renewButton === 'renew') {
           tastUUID = props.listdata.task_uuid
         } else {
-          const taskData = await getTaskUUid(weiApprove.value)
+          taskData = await getTaskUUid(weiApprove.value)
           tastUUID = taskData?.uuid
         }
         if (!tastUUID) {
@@ -553,7 +553,7 @@ export default defineComponent({
         const getID = await system.$commonFun.web3Init.eth.net.getId()
         let fd = new FormData()
         const price = system.$commonFun.web3Init.utils.toWei(String(wei*ruleForm.usageTime), 'ether')
-        fd.append('paid', String(wei*ruleForm.usageTime)) // 授权代币的金额
+        fd.append('paid', String(pricePerHour.value*ruleForm.usageTime)) // 授权代币的金额
         fd.append('space_name', route.params.name)
         fd.append('cfg_name', sleepSelect.value.hardware_name)
         fd.append('duration', ruleForm.usageTime * 3600)
