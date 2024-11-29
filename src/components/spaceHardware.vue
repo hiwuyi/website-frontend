@@ -564,7 +564,7 @@ export default defineComponent({
         const taskRes = await system.$commonFun.sendRequest(`${process.env.VUE_APP_BASEAPI}space/deployment`, 'post', fd)
         if (taskRes && taskRes.status === "success") {
           return taskRes.data.task
-        }
+        } else if(taskRes.message) system.$commonFun.messageTip('error', taskRes.message)
       } catch {
         return null
       }
